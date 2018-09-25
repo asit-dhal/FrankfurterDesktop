@@ -9,6 +9,7 @@
 */
 
 #include "JsonRequest.h"
+#include "Rate.h"
 
 JsonRequest::JsonRequest(String urlString) : ThreadPoolJob(urlString), url (urlString) {}
 
@@ -34,7 +35,7 @@ JsonRequest::Response JsonRequest::execute ()
     }
 
     response.bodyAsString = in->readEntireStreamAsString();
-    response.result = JSON::parse(response.bodyAsString, response.body);
+    
 
     return response;
 }
@@ -79,7 +80,15 @@ String JsonRequest::stringPairArrayToHeaderString(StringPairArray stringPairArra
 
 ThreadPoolJob::JobStatus JsonRequest::runJob()
 {
-    lastResponse = execute();
+    try
+    {
+        lastResponse = execute();
+        lastResponse.rates.parseFromString(response.bodyAsString.toStdString());
+    }
+    catch(const std::exception &e)
+    {
+        Logger::outputDebugString("Exception: " + String(e.what()));
+    }
     signalJobShouldExit();
 }
 

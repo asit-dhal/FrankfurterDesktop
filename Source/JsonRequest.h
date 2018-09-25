@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Rate.h"
 
 class JsonRequest : public ThreadPoolJob
 {
@@ -23,7 +24,7 @@ public:
     {
         Result result;
         StringPairArray headers;
-        var body;
+        Rate rates;
         String bodyAsString;
         int status;
         
