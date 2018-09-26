@@ -44,6 +44,12 @@ void MainComponent::resized()
 void MainComponent::exitSignalSent()
 {
     TRACE_CLS_LINE(MainComponent);
+    triggerAsyncUpdate();
+}
+
+void MainComponent::handleAsyncUpdate()
+{
+    TRACE_CLS_LINE(MainComponent);
     auto response = m_req.getLastResponse().rates;
     TRACE_CLS(MainComponent, "Rates: " + String(response.stringify()));
     

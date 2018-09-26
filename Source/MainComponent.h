@@ -10,6 +10,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "JsonRequest.h"
+#include "Rate.h"
 
 //==============================================================================
 /*
@@ -18,6 +19,7 @@
 */
 class MainComponent : public Component
                     , public Thread::Listener
+                    , public AsyncUpdater
 {
 public:
     //==============================================================================
@@ -28,10 +30,12 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void exitSignalSent() override;
+    void handleAsyncUpdate() override;
 
 private:
     ThreadPool m_threadPool;
     JsonRequest m_req;
+    Rate m_rates;
     
     Label m_currencyLabel;
     Label m_dateLabel;
