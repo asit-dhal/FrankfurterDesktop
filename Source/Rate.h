@@ -54,7 +54,10 @@ enum class Currency
 };
 
 std::string describe(Currency currency);
+
 Currency fromStdString(std::string str);
+
+
 std::string toStdString(Currency currency);
 
 class Rate
@@ -63,6 +66,8 @@ public:
     Rate();
     void parseFromString(std::string data);
     std::string stringify() const;
+    Currency getBaseCurrency() const;
+    Time getDateTime() const;
 private:
     Currency m_baseCurrency;
     Time m_date;

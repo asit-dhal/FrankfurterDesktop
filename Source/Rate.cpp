@@ -201,3 +201,13 @@ std::string Rate::stringify() const
     str += "]";
     return str;
 }
+
+Currency Rate::getBaseCurrency() const
+{
+    return m_baseCurrency;
+}
+
+Time Rate::getDateTime() const
+{
+    return m_date;
+}

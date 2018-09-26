@@ -69,6 +69,7 @@ public:
             setContentOwned (new MainComponent(), true);
 
             centreWithSize (getWidth(), getHeight());
+            setResizable(true, true);
             setVisible (true);
         }
 

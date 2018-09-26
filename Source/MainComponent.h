@@ -32,6 +32,9 @@ public:
 private:
     ThreadPool m_threadPool;
     JsonRequest m_req;
+    
+    Label m_currencyLabel;
+    Label m_dateLabel;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

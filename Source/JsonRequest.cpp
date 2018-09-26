@@ -10,6 +10,7 @@
 
 #include "JsonRequest.h"
 #include "Rate.h"
+#include "Utility.h"
 
 JsonRequest::JsonRequest(String urlString) : ThreadPoolJob(urlString), url (urlString) {}
 
@@ -30,7 +31,7 @@ JsonRequest::Response JsonRequest::execute ()
     response.result = checkInputStream (in);
     if (response.result.failed())
     {
-        Logger::outputDebugString("Request failed");
+        TRACE_CLS(JsonRequest, "Request failed");
         return response;
     }
 
@@ -80,6 +81,7 @@ String JsonRequest::stringPairArrayToHeaderString(StringPairArray stringPairArra
 
 ThreadPoolJob::JobStatus JsonRequest::runJob()
 {
+    TRACE_CLS_LINE(JsonRequest);
     try
     {
         lastResponse = execute();
@@ -87,7 +89,7 @@ ThreadPoolJob::JobStatus JsonRequest::runJob()
     }
     catch(const std::exception &e)
     {
-        Logger::outputDebugString("Exception: " + String(e.what()));
+        TRACE_CLS(JsonRequest, "Exception: " + String(e.what()));
     }
     signalJobShouldExit();
 }
