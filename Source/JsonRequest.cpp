@@ -29,6 +29,7 @@ JsonRequest::Response JsonRequest::execute ()
     ScopedPointer<InputStream> in (urlRequest.createInputStream (hasFields, nullptr, nullptr, stringPairArrayToHeaderString(headers), 0, &response.headers, &response.status, 5, verb));
         
     response.result = checkInputStream (in);
+    TRACE_CLS(JsonRequest, "status=" + std::to_string(response.status));
     if (response.result.failed())
     {
         TRACE_CLS(JsonRequest, "Request failed");

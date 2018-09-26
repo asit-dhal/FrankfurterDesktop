@@ -68,6 +68,8 @@ public:
     std::string stringify() const;
     Currency getBaseCurrency() const;
     Time getDateTime() const;
+    std::vector<std::pair<Currency, double>> getSpotPrices() const;
+    int getSpotPriceCount() const;
 private:
     Currency m_baseCurrency;
     Time m_date;

@@ -51,6 +51,7 @@ std::string describe(Currency currency)
     case Currency::SGD: return std::string("Singapore dollar");
     case Currency::THB: return std::string("Thai baht");
     case Currency::ZAR: return std::string("South African rand");
+    default: return std::string("Unknown");
     }
 }
 
@@ -128,6 +129,7 @@ std::string toStdString(Currency currency)
     case Currency::SGD: return std::string("SGD");
     case Currency::THB: return std::string("THB");
     case Currency::ZAR: return std::string("ZAR");
+    default: return std::string("South African rand");
     }
 }
 
@@ -210,4 +212,20 @@ Currency Rate::getBaseCurrency() const
 Time Rate::getDateTime() const
 {
     return m_date;
+}
+
+std::vector<std::pair<Currency, double>> Rate::getSpotPrices() const
+{
+    std::vector<std::pair<Currency, double>> ret;
+    
+    for(auto const e: m_rates)
+    {
+        ret.emplace_back(e);
+    }
+    return ret;
+}
+
+int Rate::getSpotPriceCount() const
+{
+    return m_rates.size();
 }
