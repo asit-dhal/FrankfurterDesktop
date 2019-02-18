@@ -42,7 +42,7 @@ public:
     {
         Result result;
         StringPairArray headers;
-        Rate rates;
+        LatestRate rates;
         String bodyAsString;
         int status;
         

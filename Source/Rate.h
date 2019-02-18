@@ -78,10 +78,10 @@ Currency fromStdString(std::string str);
 
 std::string toStdString(Currency currency);
 
-class Rate
+class LatestRate
 {
 public:
-    Rate();
+    LatestRate();
     void parseFromString(std::string data);
     std::string stringify() const;
     Currency getBaseCurrency() const;

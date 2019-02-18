@@ -149,7 +149,7 @@ std::string toStdString(Currency currency)
     }
 }
 
-Rate::Rate()
+LatestRate::LatestRate()
 {
     m_allCurrencies.push_back(Currency::EUR);
     m_allCurrencies.push_back(Currency::USD);
@@ -186,7 +186,7 @@ Rate::Rate()
     m_allCurrencies.push_back(Currency::ZAR);
 }
 
-void Rate::parseFromString(std::string data)
+void LatestRate::parseFromString(std::string data)
 {
 	m_baseCurrency = fromStdString("EUR");
 	if (auto xml = parseXML(String(data)))
@@ -225,7 +225,7 @@ void Rate::parseFromString(std::string data)
 	}
 }
 
-std::string Rate::stringify() const
+std::string LatestRate::stringify() const
 {
     std::string str;
     str += "Base Currency: " + toStdString(m_baseCurrency) +  "| ";
@@ -239,17 +239,17 @@ std::string Rate::stringify() const
     return str;
 }
 
-Currency Rate::getBaseCurrency() const
+Currency LatestRate::getBaseCurrency() const
 {
     return m_baseCurrency;
 }
 
-Time Rate::getDateTime() const
+Time LatestRate::getDateTime() const
 {
     return m_date;
 }
 
-std::vector<std::pair<Currency, double>> Rate::getSpotPrices() const
+std::vector<std::pair<Currency, double>> LatestRate::getSpotPrices() const
 {
     std::vector<std::pair<Currency, double>> ret;
     
@@ -260,7 +260,7 @@ std::vector<std::pair<Currency, double>> Rate::getSpotPrices() const
     return ret;
 }
 
-int Rate::getSpotPriceCount() const
+int LatestRate::getSpotPriceCount() const
 {
     return m_rates.size();
 }
