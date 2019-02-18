@@ -16,6 +16,18 @@ LatestRateComponent::LatestRateComponent() :
 	m_threadPool(3), 
 	m_req("http://www.ecb.europa.eu")
 {
+	addAndMakeVisible(&m_filterText);
+	m_filterText.setFont(font);
+	m_filterText.setText("Filter", dontSendNotification);
+	m_filterText.setJustificationType(Justification::left);
+	m_filterText.setEditable(true);
+	m_filterText.attachToComponent(&m_table, false);
+	m_filterText.showEditor();
+
+	addAndMakeVisible(&m_refreshButton);
+	m_refreshButton.setButtonText("Refresh");
+	m_refreshButton.addListener(this);
+
 	addAndMakeVisible(&m_table);
 	m_table.setColour(ListBox::outlineColourId, Colours::grey);
 	m_table.setOutlineThickness(1);
@@ -23,6 +35,8 @@ LatestRateComponent::LatestRateComponent() :
 	m_table.getHeader().addColumn("Currency", 1, 50);
 	m_table.getHeader().addColumn("Spot Price", 2, 50);
 
+
+	m_filterText.addListener(this);
 
 	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
 	m_req.addListener(this);
@@ -39,7 +53,12 @@ void LatestRateComponent::paint (Graphics&)
 
 void LatestRateComponent::resized()
 {
-	m_table.setBounds(getLocalBounds());
+	auto area = getLocalBounds();
+	auto topArea = area.removeFromTop(40);
+	topArea.reduce(0, 10);
+	m_refreshButton.setBounds(topArea.removeFromRight(100));
+	m_filterText.setBounds(topArea);
+	m_table.setBounds(area);
 }
 
 void LatestRateComponent::exitSignalSent()
@@ -76,6 +95,8 @@ void LatestRateComponent::paintRowBackground(Graphics& g, int rowNumber, int, in
 
 void LatestRateComponent::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
+	if (rowNumber >= m_currencySpotPrices.size())
+		return;
 	g.setColour(rowIsSelected ? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
 	g.setFont(font);
 
@@ -134,5 +155,18 @@ void LatestRateComponent::informListener()
 {
 	for (auto &e : m_listeners) {
 		e->dataUpdated();
+		e->statusChanged(String("new data arrived"));
 	}
+}
+
+void LatestRateComponent::labelTextChanged(Label* labelThatHasChanged)
+{
+
+}
+
+
+void LatestRateComponent::buttonClicked(Button* button)
+{
+	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
+	m_threadPool.addJob(&m_req, false);
 }

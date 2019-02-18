@@ -13,10 +13,13 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "JsonRequest.h"
 
-class LatestRateComponent    : public Component
-	, public TableListBoxModel
-	, public Thread::Listener
-	, public AsyncUpdater
+class LatestRateComponent :
+	public Component,
+	public TableListBoxModel,
+	public Thread::Listener,
+	public Label::Listener,
+	public Button::Listener,
+	public AsyncUpdater
 {
 public:
 
@@ -24,6 +27,7 @@ public:
 	{
 	public:
 		virtual void dataUpdated() = 0;
+		virtual void statusChanged(String message) = 0;
 	};
 
     LatestRateComponent();
@@ -42,6 +46,9 @@ public:
 	void addListener(Listener* listener);
 	void informListener();
 
+	void labelTextChanged(Label* labelThatHasChanged) override;
+	void buttonClicked(Button* button) override;
+
 private:
 	ThreadPool m_threadPool;
 	JsonRequest m_req;
@@ -51,6 +58,9 @@ private:
 	Currency m_baseCurrency;
 	Time m_time;
 	std::vector<Listener*> m_listeners;
+	Label m_filterText;
+	TextButton m_refreshButton;
+
  
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LatestRateComponent)

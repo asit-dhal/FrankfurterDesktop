@@ -22,7 +22,11 @@
 #include <vector>
 #include <tuple>
 
-class MainComponent : public Component, public AsyncUpdater, public LatestRateComponent::Listener
+class MainComponent : 
+	public Component, 
+	public AsyncUpdater, 
+	public LatestRateComponent::Listener,
+	public Timer
 {
 public:
     //==============================================================================
@@ -34,12 +38,14 @@ public:
     void resized() override;
 	void handleAsyncUpdate() override;
 	void dataUpdated() override;
+	void statusChanged(String message) override;
+	void timerCallback() override;
 
 private:
     Label m_currencyLabel;
     Label m_dateLabel;   
 	LatestRateComponent m_latestRateComponent;
-
+	Label m_statueLabel;
     Font font           { 14.0f };
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

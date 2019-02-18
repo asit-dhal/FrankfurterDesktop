@@ -25,16 +25,20 @@ MainComponent::MainComponent()
 {
     m_currencyLabel.setJustificationType (Justification::centred);
     m_dateLabel.setJustificationType (Justification::centred);
-    
+	m_statueLabel.setJustificationType(Justification::left);
+
     m_currencyLabel.setFont (Font (16.0f, Font::bold));
     m_dateLabel.setFont (Font (16.0f, Font::bold));
+	m_statueLabel.setFont(font);
 
 	m_latestRateComponent.addListener(this);
     
+	
 	addAndMakeVisible(&m_currencyLabel);
     addAndMakeVisible(&m_dateLabel);
     addAndMakeVisible(&m_latestRateComponent);
-    
+	addAndMakeVisible(&m_statueLabel);
+
     setSize (600, 400);
 
 	
@@ -55,6 +59,7 @@ void MainComponent::resized()
     auto titleHeight = 30;
     m_currencyLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
     m_dateLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
+	m_statueLabel.setBounds(area.removeFromBottom(20).reduced(5));
 	m_latestRateComponent.setBounds(area.reduced(10));
 }
 
@@ -69,4 +74,15 @@ void MainComponent::handleAsyncUpdate()
 void MainComponent::dataUpdated()
 {
 	triggerAsyncUpdate();
+}
+
+void MainComponent::statusChanged(String message)
+{
+	m_statueLabel.setText(message, dontSendNotification);
+	startTimer(3000);
+}
+
+void MainComponent::timerCallback()
+{
+	m_statueLabel.setText("", dontSendNotification);
 }
