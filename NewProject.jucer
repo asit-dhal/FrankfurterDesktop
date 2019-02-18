@@ -4,6 +4,10 @@
               cppLanguageStandard="17" splashScreenColour="Light">
   <MAINGROUP id="uU5xi1" name="CurrencyExchanger">
     <GROUP id="{5C0247CA-588B-DA27-71D3-A5905731F4BD}" name="Source">
+      <FILE id="fbkajZ" name="LatestRateComponent.cpp" compile="1" resource="0"
+            file="Source/LatestRateComponent.cpp"/>
+      <FILE id="i5jX0R" name="LatestRateComponent.h" compile="0" resource="0"
+            file="Source/LatestRateComponent.h"/>
       <FILE id="o38oK1" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="Tld1Ab" name="JsonRequest.cpp" compile="1" resource="0" file="Source/JsonRequest.cpp"/>
       <FILE id="NyrGtk" name="JsonRequest.h" compile="0" resource="0" file="Source/JsonRequest.h"/>

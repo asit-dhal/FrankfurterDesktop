@@ -18,15 +18,11 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "JsonRequest.h"
-#include "Rate.h"
+#include "LatestRateComponent.h"
 #include <vector>
 #include <tuple>
 
-class MainComponent : public Component
-                    , public TableListBoxModel
-                    , public Thread::Listener
-                    , public AsyncUpdater
+class MainComponent : public Component, public AsyncUpdater, public LatestRateComponent::Listener
 {
 public:
     //==============================================================================
@@ -36,25 +32,14 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    void exitSignalSent() override;
-    void handleAsyncUpdate() override;
-    
-    int getNumRows() override;
-    void paintRowBackground (Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
-    void paintCell (Graphics& g, int rowNumber, int columnId,
-                    int width, int height, bool rowIsSelected) override;
-    int getColumnAutoSizeWidth (int columnId) override;
+	void handleAsyncUpdate() override;
+	void dataUpdated() override;
 
 private:
-    ThreadPool m_threadPool;
-    JsonRequest m_req;
-    std::vector<std::pair<Currency, double>> m_currencySpotPrices;
-    
     Label m_currencyLabel;
-    Label m_dateLabel;
-    
-    TableListBox m_table { {}, this };
-    
+    Label m_dateLabel;   
+	LatestRateComponent m_latestRateComponent;
+
     Font font           { 14.0f };
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
