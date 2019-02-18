@@ -111,6 +111,7 @@ ThreadPoolJob::JobStatus JsonRequest::runJob()
         TRACE_CLS(JsonRequest, "Exception: " + String(e.what()));
     }
     signalJobShouldExit();
+	return ThreadPoolJob::JobStatus::jobHasFinished;
 }
 
 const JsonRequest::Response JsonRequest::getLastResponse() const

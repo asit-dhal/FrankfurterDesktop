@@ -27,10 +27,8 @@
 */
 
 #include "Rate.h"
-#include <json.hpp>
 #include <boost/algorithm/string.hpp>
 
-using json = nlohmann::json;
 
 std::string describe(Currency currency)
 {
@@ -190,22 +188,41 @@ Rate::Rate()
 
 void Rate::parseFromString(std::string data)
 {
-    
-    json jsonData = json::parse(data);
-    m_baseCurrency = fromStdString(jsonData.value("base", ""));
-    
-    auto date = jsonData.value("date", "");
-    std::vector<std::string> timeTokens;
-    boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
-    m_date = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)), std::stoi(timeTokens.at(2)), 0, 0); 
-    
-    auto rateData = jsonData["rates"];
-    
-    for (auto it : rateData.items()) {
-        std::string key = it.key();
-        double val = it.value();
-        m_rates[fromStdString(key)] = val;
-    }
+	m_baseCurrency = fromStdString("EUR");
+	if (auto xml = parseXML(String(data)))
+	{
+		if (xml->hasTagName("gesmes:Envelope"))
+		{
+			forEachXmlChildElement(*xml, envelope)
+			{
+				if (envelope->hasTagName("Cube"))
+				{
+					forEachXmlChildElement(*envelope, cubeOuter)
+					{
+						if (cubeOuter->hasAttribute("time"))
+						{
+							auto date = cubeOuter->getStringAttribute("time").toStdString();
+							std::vector<std::string> timeTokens;
+							boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
+							m_date = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1))-1, std::stoi(timeTokens.at(2)), 0, 0); 
+						}
+						if (cubeOuter->hasTagName("Cube"))
+						{
+							forEachXmlChildElement(*cubeOuter, cubeWithTime)
+							{
+								if (cubeWithTime->hasTagName("Cube"))
+								{
+									auto currency = cubeWithTime->getStringAttribute("currency");
+									auto value = cubeWithTime->getDoubleAttribute("rate");
+									m_rates[fromStdString(currency.toStdString())] = value;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 std::string Rate::stringify() const

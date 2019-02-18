@@ -23,7 +23,7 @@
 #include <sstream>
 
 MainComponent::MainComponent(): m_threadPool(3)
-                              , m_req("http://api.openrates.io")
+                              , m_req("http://www.ecb.europa.eu")
 {
     
     m_currencyLabel.setJustificationType (Justification::centred);
@@ -43,7 +43,7 @@ MainComponent::MainComponent(): m_threadPool(3)
     
     setSize (600, 400);
     
-    m_req.setGet("latest");
+    m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
     m_req.addListener(this);
     m_threadPool.addJob(&m_req, false);
     TRACE_CLS_LINE(MainComponent);
