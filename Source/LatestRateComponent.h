@@ -48,9 +48,9 @@ public:
 
 	void labelTextChanged(Label* labelThatHasChanged) override;
 	void buttonClicked(Button* button) override;
+	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 
 private:
-	ThreadPool m_threadPool;
 	JsonRequest m_req;
 	TableListBox m_table{ {}, this };
 	std::vector<std::pair<Currency, double>> m_currencySpotPrices;

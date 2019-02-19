@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\Source\JsonRequest.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Rate.cpp"/>
+    <ClCompile Include="..\..\Source\Utility.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1356,6 +1357,7 @@
     <ClInclude Include="..\..\Source\MainComponent.h"/>
     <ClInclude Include="..\..\Source\JsonRequest.h"/>
     <ClInclude Include="..\..\Source\Rate.h"/>
+    <ClInclude Include="..\..\Source\Utility.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

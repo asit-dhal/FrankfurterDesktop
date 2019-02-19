@@ -10,10 +10,10 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LatestRateComponent.h"
+#include "Utility.h"
 
 //==============================================================================
 LatestRateComponent::LatestRateComponent() :
-	m_threadPool(3), 
 	m_req("http://www.ecb.europa.eu")
 {
 	addAndMakeVisible(&m_filterText);
@@ -40,7 +40,7 @@ LatestRateComponent::LatestRateComponent() :
 
 	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
 	m_req.addListener(this);
-	m_threadPool.addJob(&m_req, false);
+	GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
 }
 
 LatestRateComponent::~LatestRateComponent()
@@ -168,5 +168,10 @@ void LatestRateComponent::labelTextChanged(Label* labelThatHasChanged)
 void LatestRateComponent::buttonClicked(Button* button)
 {
 	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
-	m_threadPool.addJob(&m_req, false);
+	GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
+}
+
+void LatestRateComponent::sortOrderChanged(int newSortColumnId, bool isForwards)
+{
+
 }

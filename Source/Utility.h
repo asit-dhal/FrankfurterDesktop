@@ -28,7 +28,23 @@
 
 #pragma once
 
+#include "../JuceLibraryCode/JuceHeader.h"
+
 #define TRACE(msg) DBG(String("Time=") + String(std::to_string(Time::currentTimeMillis())) + " tid=" + String::toHexString ((int64)Thread::getCurrentThreadId()) + " " + __FUNCTION__ + ":" + String(__LINE__) + " " + msg)
 #define TRACE_CLS(cls, msg) DBG(String("Time=") + String(std::to_string(Time::currentTimeMillis())) + " tid=" + String::toHexString ((int64)Thread::getCurrentThreadId()) + " " + String(#cls) + "::" + __FUNCTION__ + ":" +  String(__LINE__) + " " +  msg)
 #define TRACE_LINE  DBG(String("Time=") + String(std::to_string(Time::currentTimeMillis())) + " tid=" + String::toHexString ((int64)Thread::getCurrentThreadId()) + " " + __FUNCTION__ + ":" + String(__LINE__))
 #define TRACE_CLS_LINE(cls) DBG(String("Time=") + String(std::to_string(Time::currentTimeMillis())) + " tid=" + String::toHexString ((int64)Thread::getCurrentThreadId()) + " " + String(#cls) + "::" + __FUNCTION__ + ":" +  String(__LINE__))
+
+
+class GlobalInstance
+{
+public:
+	ThreadPool& getThreadPool();
+
+private:
+	GlobalInstance();
+	ThreadPool m_threadPool;
+
+public:
+	JUCE_DECLARE_SINGLETON(GlobalInstance, false);
+};

@@ -15,6 +15,8 @@
             file="Source/MainComponent.cpp"/>
       <FILE id="j8gK0d" name="Rate.cpp" compile="1" resource="0" file="Source/Rate.cpp"/>
       <FILE id="uZze9J" name="Rate.h" compile="0" resource="0" file="Source/Rate.h"/>
+      <FILE id="GmDxsr" name="Utility.cpp" compile="1" resource="0" file="Source/Utility.cpp"/>
+      <FILE id="OCH9kX" name="Utility.h" compile="0" resource="0" file="Source/Utility.h"/>
       <FILE id="EhTctg" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
