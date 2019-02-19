@@ -73,6 +73,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/MainComponent_a6ffb4a5.o \
   $(JUCE_OBJDIR)/Rate_aa982169.o \
   $(JUCE_OBJDIR)/Utility_e4654bcd.o \
+  $(JUCE_OBJDIR)/LatestRateModel_2bd5c5c3.o \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
   $(JUCE_OBJDIR)/include_juce_core_f26d17db.o \
   $(JUCE_OBJDIR)/include_juce_cryptography_8cb807a8.o \
@@ -118,6 +119,11 @@ $(JUCE_OBJDIR)/Rate_aa982169.o: ../../Source/Rate.cpp
 $(JUCE_OBJDIR)/Utility_e4654bcd.o: ../../Source/Utility.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling Utility.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/LatestRateModel_2bd5c5c3.o: ../../Source/LatestRateModel.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling LatestRateModel.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp

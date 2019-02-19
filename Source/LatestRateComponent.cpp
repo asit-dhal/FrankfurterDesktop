@@ -12,9 +12,9 @@
 #include "LatestRateComponent.h"
 #include "Utility.h"
 
+
 //==============================================================================
-LatestRateComponent::LatestRateComponent() :
-	m_req("http://www.ecb.europa.eu")
+LatestRateComponent::LatestRateComponent()
 {
 	addAndMakeVisible(&m_filterText);
 	m_filterText.setFont(font);
@@ -38,9 +38,7 @@ LatestRateComponent::LatestRateComponent() :
 
 	m_filterText.addListener(this);
 
-	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
-	m_req.addListener(this);
-	GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
+	LatestRateModel::getInstance()->addListener(this);
 }
 
 LatestRateComponent::~LatestRateComponent()
@@ -61,21 +59,13 @@ void LatestRateComponent::resized()
 	m_table.setBounds(area);
 }
 
-void LatestRateComponent::exitSignalSent()
+void LatestRateComponent::modelUpdated()
 {
-	triggerAsyncUpdate();
-}
-
-void LatestRateComponent::handleAsyncUpdate()
-{
-	auto response = m_req.getLastResponse().rates;
-	m_baseCurrency = response.getBaseCurrency();
-	m_time = response.getDateTime();
-	m_currencySpotPrices = response.getSpotPrices();
+	m_baseCurrency = LatestRateModel::getInstance()->getBaseCurrency();
+	m_time = LatestRateModel::getInstance()->getTimeOfLastUpdate();
+	m_currencySpotPrices = LatestRateModel::getInstance()->getCurrencySpotPrices();
 	m_table.updateContent();
 	m_table.autoSizeAllColumns();
-
-	informListener();
 }
 
 int LatestRateComponent::getNumRows()
@@ -167,8 +157,7 @@ void LatestRateComponent::labelTextChanged(Label* labelThatHasChanged)
 
 void LatestRateComponent::buttonClicked(Button* button)
 {
-	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
-	GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
+	LatestRateModel::getInstance()->refresh();
 }
 
 void LatestRateComponent::sortOrderChanged(int newSortColumnId, bool isForwards)

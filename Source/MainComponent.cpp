@@ -31,7 +31,7 @@ MainComponent::MainComponent()
     m_dateLabel.setFont (Font (16.0f, Font::bold));
 	m_statueLabel.setFont(font);
 
-	m_latestRateComponent.addListener(this);
+	//m_latestRateComponent.addListener(this);
     
 	
 	addAndMakeVisible(&m_currencyLabel);
@@ -41,6 +41,7 @@ MainComponent::MainComponent()
 
     setSize (600, 400);
 
+	LatestRateModel::getInstance()->addListener(this);
 	
     TRACE_CLS_LINE(MainComponent);
 }
@@ -63,24 +64,22 @@ void MainComponent::resized()
 	m_latestRateComponent.setBounds(area.reduced(10));
 }
 
-void MainComponent::handleAsyncUpdate()
-{   
-    auto baseCurrencyText = "Base Currency: " + String(describe(m_latestRateComponent.getBaseCurrency()));
-    auto dateTimeText = "Foreign Exchange reference rates on " + m_latestRateComponent.getLatestRateTime().toString(true, false);
-    m_currencyLabel.setText(baseCurrencyText, dontSendNotification);
-    m_dateLabel.setText(dateTimeText, dontSendNotification);   
-}
 
-void MainComponent::dataUpdated()
+void MainComponent::modelUpdated()
 {
-	triggerAsyncUpdate();
+	auto modelInstance = LatestRateModel::getInstance();
+	auto baseCurrencyText = "Base Currency: " + String(describe(modelInstance->getBaseCurrency()));
+	auto dateTimeText = "Foreign Exchange reference rates on " + modelInstance->getTimeOfLastUpdate().toString(true, false);
+	m_currencyLabel.setText(baseCurrencyText, dontSendNotification);
+	m_dateLabel.setText(dateTimeText, dontSendNotification);
 }
 
+/*
 void MainComponent::statusChanged(String message)
 {
 	m_statueLabel.setText(message, dontSendNotification);
 	startTimer(3000);
-}
+}*/
 
 void MainComponent::timerCallback()
 {

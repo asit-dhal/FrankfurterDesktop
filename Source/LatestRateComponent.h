@@ -12,14 +12,14 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "JsonRequest.h"
+#include "LatestRateModel.h"
 
 class LatestRateComponent :
 	public Component,
 	public TableListBoxModel,
-	public Thread::Listener,
 	public Label::Listener,
 	public Button::Listener,
-	public AsyncUpdater
+	public LatestRateModel::Listener
 {
 public:
 
@@ -35,8 +35,7 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
-	void exitSignalSent() override;
-	void handleAsyncUpdate() override;
+	void modelUpdated() override;
 	int getNumRows() override;
 	void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
@@ -51,7 +50,6 @@ public:
 	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 
 private:
-	JsonRequest m_req;
 	TableListBox m_table{ {}, this };
 	std::vector<std::pair<Currency, double>> m_currencySpotPrices;
 	Font font{ 14.0f };

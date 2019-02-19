@@ -18,14 +18,14 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "LatestRateModel.h"
 #include "LatestRateComponent.h"
 #include <vector>
 #include <tuple>
 
 class MainComponent : 
 	public Component, 
-	public AsyncUpdater, 
-	public LatestRateComponent::Listener,
+	public LatestRateModel::Listener,
 	public Timer
 {
 public:
@@ -36,9 +36,9 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-	void handleAsyncUpdate() override;
-	void dataUpdated() override;
-	void statusChanged(String message) override;
+	//void handleAsyncUpdate() override;
+	void modelUpdated() override;
+	//void statusChanged(String message) override;
 	void timerCallback() override;
 
 private:
