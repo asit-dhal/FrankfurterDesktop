@@ -75,23 +75,4 @@ std::string describe(Currency currency);
 
 Currency fromStdString(std::string str);
 
-
 std::string toStdString(Currency currency);
-
-class LatestRate
-{
-public:
-    LatestRate();
-    void parseFromString(std::string data);
-    std::string stringify() const;
-    Currency getBaseCurrency() const;
-    Time getDateTime() const;
-    std::vector<std::pair<Currency, double>> getSpotPrices() const;
-    int getSpotPriceCount() const;
-private:
-    Currency m_baseCurrency;
-    Time m_date;
-    std::map<Currency, double> m_rates;
-    std::vector<Currency> m_allCurrencies;
-    
-};

@@ -27,7 +27,6 @@
 */
 
 #include "JsonRequest.h"
-#include "Rate.h"
 #include "Utility.h"
 
 JsonRequest::JsonRequest(String urlString) : ThreadPoolJob(urlString), url (urlString) {}
@@ -104,7 +103,6 @@ ThreadPoolJob::JobStatus JsonRequest::runJob()
     try
     {
         lastResponse = execute();
-        lastResponse.rates.parseFromString(response.bodyAsString.toStdString());
     }
     catch(const std::exception &e)
     {

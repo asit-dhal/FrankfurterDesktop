@@ -105,7 +105,7 @@ Currency fromStdString(std::string str)
     else if (boost::iequals(str, "PHP")) return Currency::PHP;
     else if (boost::iequals(str, "SGD")) return Currency::SGD;
     else if (boost::iequals(str, "THB")) return Currency::THB;
-    else if (boost::iequals(str, "ZAR")) return Currency::ZAR;
+    else return Currency::ZAR;
 }
 
 std::string toStdString(Currency currency)
@@ -147,120 +147,4 @@ std::string toStdString(Currency currency)
     case Currency::ZAR: return std::string("ZAR");
     default: return std::string("South African rand");
     }
-}
-
-LatestRate::LatestRate()
-{
-    m_allCurrencies.push_back(Currency::EUR);
-    m_allCurrencies.push_back(Currency::USD);
-    m_allCurrencies.push_back(Currency::JPY);
-    m_allCurrencies.push_back(Currency::BGN);
-    m_allCurrencies.push_back(Currency::CZK);
-    m_allCurrencies.push_back(Currency::DKK);
-    m_allCurrencies.push_back(Currency::GBP);
-    m_allCurrencies.push_back(Currency::HUF);
-    m_allCurrencies.push_back(Currency::PLN);
-    m_allCurrencies.push_back(Currency::RON);
-    m_allCurrencies.push_back(Currency::SEK);
-    m_allCurrencies.push_back(Currency::CHF);
-    m_allCurrencies.push_back(Currency::ISK);
-    m_allCurrencies.push_back(Currency::NOK);
-    m_allCurrencies.push_back(Currency::HRK);
-    m_allCurrencies.push_back(Currency::RUB);
-    m_allCurrencies.push_back(Currency::TRY);
-    m_allCurrencies.push_back(Currency::AUD);
-    m_allCurrencies.push_back(Currency::BRL);
-    m_allCurrencies.push_back(Currency::CAD);
-    m_allCurrencies.push_back(Currency::CNY);
-    m_allCurrencies.push_back(Currency::HKD);
-    m_allCurrencies.push_back(Currency::IDR);
-    m_allCurrencies.push_back(Currency::ILS);
-    m_allCurrencies.push_back(Currency::INR);
-    m_allCurrencies.push_back(Currency::KRW);
-    m_allCurrencies.push_back(Currency::MXN);
-    m_allCurrencies.push_back(Currency::MYR);
-    m_allCurrencies.push_back(Currency::NZD);
-    m_allCurrencies.push_back(Currency::PHP);
-    m_allCurrencies.push_back(Currency::SGD);
-    m_allCurrencies.push_back(Currency::THB);
-    m_allCurrencies.push_back(Currency::ZAR);
-}
-
-void LatestRate::parseFromString(std::string data)
-{
-	m_baseCurrency = fromStdString("EUR");
-	if (auto xml = parseXML(String(data)))
-	{
-		if (xml->hasTagName("gesmes:Envelope"))
-		{
-			forEachXmlChildElement(*xml, envelope)
-			{
-				if (envelope->hasTagName("Cube"))
-				{
-					forEachXmlChildElement(*envelope, cubeOuter)
-					{
-						if (cubeOuter->hasAttribute("time"))
-						{
-							auto date = cubeOuter->getStringAttribute("time").toStdString();
-							std::vector<std::string> timeTokens;
-							boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
-							m_date = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1))-1, std::stoi(timeTokens.at(2)), 0, 0); 
-						}
-						if (cubeOuter->hasTagName("Cube"))
-						{
-							forEachXmlChildElement(*cubeOuter, cubeWithTime)
-							{
-								if (cubeWithTime->hasTagName("Cube"))
-								{
-									auto currency = cubeWithTime->getStringAttribute("currency");
-									auto value = cubeWithTime->getDoubleAttribute("rate");
-									m_rates[fromStdString(currency.toStdString())] = value;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-std::string LatestRate::stringify() const
-{
-    std::string str;
-    str += "Base Currency: " + toStdString(m_baseCurrency) +  "| ";
-    str += "Date: " + m_date.toString(true, false).toStdString() +  "| ";
-    str += "Rates: [";
-    for(auto const& ele:  m_rates)
-    {
-        str += toStdString(ele.first) + "=>" + std::to_string(ele.second) + ", ";
-    }
-    str += "]";
-    return str;
-}
-
-Currency LatestRate::getBaseCurrency() const
-{
-    return m_baseCurrency;
-}
-
-Time LatestRate::getDateTime() const
-{
-    return m_date;
-}
-
-std::vector<std::pair<Currency, double>> LatestRate::getSpotPrices() const
-{
-    std::vector<std::pair<Currency, double>> ret;
-    
-    for(auto const e: m_rates)
-    {
-        ret.emplace_back(e);
-    }
-    return ret;
-}
-
-int LatestRate::getSpotPriceCount() const
-{
-    return m_rates.size();
 }

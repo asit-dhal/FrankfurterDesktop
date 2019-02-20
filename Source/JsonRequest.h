@@ -29,7 +29,6 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Rate.h"
 
 class JsonRequest : public ThreadPoolJob
 {
@@ -42,10 +41,8 @@ public:
     {
         Result result;
         StringPairArray headers;
-        LatestRate rates;
         String bodyAsString;
-        int status;
-        
+        int status;        
         Response() : result (Result::ok()), status (0) {}
     } response;
 

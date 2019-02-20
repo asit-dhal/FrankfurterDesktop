@@ -11,6 +11,8 @@
 #include "LatestRateModel.h"
 #include "Utility.h"
 
+#include <boost/algorithm/string.hpp>
+
 LatestRateModel::LatestRateModel() :
 	m_req("http://www.ecb.europa.eu")
 {
@@ -26,10 +28,7 @@ void LatestRateModel::exitSignalSent()
 
 void LatestRateModel::handleAsyncUpdate()
 {
-	auto response = m_req.getLastResponse().rates;
-	m_baseCurrency = response.getBaseCurrency();
-	m_time = response.getDateTime();
-	m_currencySpotPrices = response.getSpotPrices();
+	parseResponse(m_req.getLastResponse().bodyAsString);
 	informListener();
 }
 
@@ -64,5 +63,54 @@ void LatestRateModel::refresh()
 	m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
 	GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
 }
+
+void LatestRateModel::parseResponse(String response)
+{
+	std::map<Currency, double> rates;
+	m_baseCurrency = fromStdString("EUR");
+
+	if (auto xml = parseXML(response))
+	{
+		if (xml->hasTagName("gesmes:Envelope"))
+		{
+			forEachXmlChildElement(*xml, envelope)
+			{
+				if (envelope->hasTagName("Cube"))
+				{
+					forEachXmlChildElement(*envelope, cubeOuter)
+					{
+						if (cubeOuter->hasAttribute("time"))
+						{
+							auto date = cubeOuter->getStringAttribute("time").toStdString();
+							std::vector<std::string> timeTokens;
+							boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
+							m_time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1, std::stoi(timeTokens.at(2)), 0, 0);
+						}
+						if (cubeOuter->hasTagName("Cube"))
+						{
+							forEachXmlChildElement(*cubeOuter, cubeWithTime)
+							{
+								if (cubeWithTime->hasTagName("Cube"))
+								{
+									auto currency = cubeWithTime->getStringAttribute("currency");
+									auto value = cubeWithTime->getDoubleAttribute("rate");
+									rates[fromStdString(currency.toStdString())] = value;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	m_currencySpotPrices.clear();
+	for (auto const e : rates)
+	{
+		m_currencySpotPrices.emplace_back(e);
+	}
+}
+
+
 
 JUCE_IMPLEMENT_SINGLETON(LatestRateModel);

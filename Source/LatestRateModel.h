@@ -37,6 +37,7 @@ public:
 private:
 	LatestRateModel();
 	void informListener();
+	void parseResponse(String response);
 
 private:
 	std::vector<std::pair<Currency, double>> m_currencySpotPrices;
