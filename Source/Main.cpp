@@ -65,6 +65,7 @@ public:
             centreWithSize (getWidth(), getHeight());
             setResizable(true, true);
             setVisible (true);
+            setFullScreen(true);
         }
 
         void closeButtonPressed() override

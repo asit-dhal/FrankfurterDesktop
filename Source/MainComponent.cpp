@@ -30,9 +30,6 @@ MainComponent::MainComponent()
     m_currencyLabel.setFont (Font (16.0f, Font::bold));
     m_dateLabel.setFont (Font (16.0f, Font::bold));
 	m_statueLabel.setFont(font);
-
-	//m_latestRateComponent.addListener(this);
-    
 	
 	addAndMakeVisible(&m_currencyLabel);
     addAndMakeVisible(&m_dateLabel);

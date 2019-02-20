@@ -12,7 +12,6 @@
 #include "LatestRateComponent.h"
 #include "Utility.h"
 
-
 //==============================================================================
 LatestRateComponent::LatestRateComponent()
 {

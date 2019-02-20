@@ -55,7 +55,6 @@ JsonRequest::Response JsonRequest::execute ()
 
     response.bodyAsString = in->readEntireStreamAsString();
     
-
     return response;
 }
 
