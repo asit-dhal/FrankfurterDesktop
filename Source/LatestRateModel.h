@@ -40,6 +40,7 @@ public:
 	void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 	int getColumnAutoSizeWidth(int columnId) override;
+    void selectedRowsChanged(int lastRowSelected) override;
 
 private:
 	LatestRateModel();

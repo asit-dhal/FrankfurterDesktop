@@ -78,3 +78,4 @@ Currency fromStdString(std::string str);
 std::string toStdString(Currency currency);
 
 bool operator<(Currency c1, Currency c2);
+

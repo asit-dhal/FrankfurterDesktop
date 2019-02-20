@@ -36,11 +36,13 @@ public:
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
     int getColumnAutoSizeWidth(int columnId) override;
 
+    void setHistoricalRateByCurrency(const Currency& currency);
+    
+
 private:
     HistoricalRateModel();
     void informListener();
     void parseResponse(String response);
-    void setHistoricalRateByCurrency(const Currency& currency);
 
 private:
     std::map<Time, std::map<Currency, double>> m_historicalRates;

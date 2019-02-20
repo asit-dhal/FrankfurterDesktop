@@ -99,13 +99,14 @@ void HistoricalRateModel::setHistoricalRateByCurrency(const Currency& currency)
 {
     m_selectedCurrencyData.clear();
 
-
     for (auto e : m_historicalRates) {
         auto itr = e.second.find(currency);
         if (itr != e.second.end()) {
             m_selectedCurrencyData.push_back(std::make_pair(e.first, itr->second));
         }
     }
+
+    informListener();
 }
 
 int HistoricalRateModel::getNumRows()

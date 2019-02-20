@@ -9,6 +9,7 @@
 */
 
 #include "LatestRateModel.h"
+#include "HistoricalRateModel.h"
 #include "Utility.h"
 
 #include <boost/algorithm/string.hpp>
@@ -169,4 +170,12 @@ int LatestRateModel::getColumnAutoSizeWidth(int columnId)
 
 	}
 	return widest + 8;
+}
+
+void LatestRateModel::selectedRowsChanged(int lastRowSelected)
+{
+    if (lastRowSelected < getNumRows()) {
+        auto currency = m_currencySpotPrices.at(lastRowSelected).first;
+        HistoricalRateModel::getInstance()->setHistoricalRateByCurrency(currency);
+    }
 }
