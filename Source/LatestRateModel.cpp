@@ -137,12 +137,17 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
 	g.setFont({ 14.0f });
 
 	String text;
-	if (columnId == 1)
-	{
+    if (columnId == 1) {
+        auto image = GlobalInstance::getInstance()->getIcon(toString(m_currencySpotPrices.at(rowNumber).first));
+        if (image) {
+            image->drawWithin(g, Rectangle<float>(0, 0, width, height), RectanglePlacement::stretchToFit, 0);
+            return;
+        }
+    }
+	else if (columnId == 2) {
 		text = String(describe(m_currencySpotPrices.at(rowNumber).first));
 	}
-	else
-	{
+	else {
 		text = String(std::to_string(m_currencySpotPrices.at(rowNumber).second));
 	}
 
@@ -155,18 +160,18 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
 int LatestRateModel::getColumnAutoSizeWidth(int columnId)
 {
 	int widest = 50;
-	for (auto i = getNumRows(); --i >= 0;)
-	{
+	for (auto i = getNumRows(); --i >= 0;) {
 		String text;
-		if (columnId == 1)
-		{
-			text = String(describe(m_currencySpotPrices.at(i).first));
-		}
-		else
-		{
-			text = String(std::to_string(m_currencySpotPrices.at(i).second));
-		}
-		widest = jmax(widest, Font({ 14.0f }).getStringWidth(text));
+        if (columnId == 1) {
+            text = toString(m_currencySpotPrices.at(i).first);
+        }
+        else if (columnId == 2) {
+            text = String(describe(m_currencySpotPrices.at(i).first));
+        }
+        else {
+            text = String(std::to_string(m_currencySpotPrices.at(i).second));
+        }
+		widest = jmax(widest, Font({ 20.0f }).getStringWidth(text));
 
 	}
 	return widest + 8;
@@ -178,4 +183,13 @@ void LatestRateModel::selectedRowsChanged(int lastRowSelected)
         auto currency = m_currencySpotPrices.at(lastRowSelected).first;
         HistoricalRateModel::getInstance()->setHistoricalRateByCurrency(currency);
     }
+}
+
+std::map<int, String> LatestRateModel::getColumnNames()
+{
+    std::map<int, String> cols;
+    cols.insert({ static_cast<int>(Column::eCurrency), "Currency Code" });
+    cols.insert({ static_cast<int>(Column::eCurrencyName), "Currency Name" });
+    cols.insert({ static_cast<int>(Column::eSpotPrice), "Spot Price" });
+    return cols;
 }

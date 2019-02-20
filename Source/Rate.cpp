@@ -149,6 +149,11 @@ std::string toStdString(Currency currency)
     }
 }
 
+String toString(Currency currency)
+{
+    return String(toStdString(currency));
+}
+
 bool operator<(Currency c1, Currency c2)
 {
     return static_cast<std::underlying_type_t<Currency>>(c1) < static_cast<std::underlying_type_t<Currency>>(c2);

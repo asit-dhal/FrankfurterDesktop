@@ -40,10 +40,14 @@ class GlobalInstance
 {
 public:
 	ThreadPool& getThreadPool();
-
+    Drawable* getIcon(String iconName);
 private:
 	GlobalInstance();
-	ThreadPool m_threadPool;
+    void loadIconsFromZipFile();
+
+    ThreadPool m_threadPool;
+    OwnedArray<Drawable> m_iconsFromZipFile;
+    StringArray m_iconNames;
 
 public:
 	JUCE_DECLARE_SINGLETON(GlobalInstance, false);
