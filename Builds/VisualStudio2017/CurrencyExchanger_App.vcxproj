@@ -145,6 +145,8 @@
     <ClCompile Include="..\..\Source\Utility.cpp"/>
     <ClCompile Include="..\..\Source\LatestRateModel.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
+    <ClCompile Include="..\..\Source\HistoricalRateComponent.cpp"/>
+    <ClCompile Include="..\..\Source\HistoricalRateModel.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1360,6 +1362,8 @@
     <ClInclude Include="..\..\Source\Rate.h"/>
     <ClInclude Include="..\..\Source\LatestRateModel.h"/>
     <ClInclude Include="..\..\Source\Utility.h"/>
+    <ClInclude Include="..\..\Source\HistoricalRateComponent.h"/>
+    <ClInclude Include="..\..\Source\HistoricalRateModel.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

@@ -20,6 +20,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LatestRateModel.h"
 #include "LatestRateComponent.h"
+#include "HistoricalRateComponent.h"
 #include <vector>
 #include <tuple>
 
@@ -45,6 +46,7 @@ private:
     Label m_currencyLabel;
     Label m_dateLabel;   
 	LatestRateComponent m_latestRateComponent;
+    HistoricalRateComponent m_historicalRateComponent;
 	Label m_statueLabel;
     Font font           { 14.0f };
     

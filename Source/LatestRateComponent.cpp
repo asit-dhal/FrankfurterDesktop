@@ -52,11 +52,11 @@ void LatestRateComponent::paint (Graphics&)
 void LatestRateComponent::resized()
 {
 	auto area = getLocalBounds();
-	auto topArea = area.removeFromTop(40);
-	topArea.reduce(0, 10);
+	auto topArea = area.removeFromBottom(40);
+    m_table.setBounds(area);
+    topArea.reduce(0, 10);
 	m_refreshButton.setBounds(topArea.removeFromRight(100));
 	m_filterText.setBounds(topArea);
-	m_table.setBounds(area);
 }
 
 void LatestRateComponent::modelUpdated()

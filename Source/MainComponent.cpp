@@ -34,6 +34,7 @@ MainComponent::MainComponent()
 	addAndMakeVisible(&m_currencyLabel);
     addAndMakeVisible(&m_dateLabel);
     addAndMakeVisible(&m_latestRateComponent);
+    addAndMakeVisible(&m_historicalRateComponent);
 	addAndMakeVisible(&m_statueLabel);
 
     setSize (600, 400);
@@ -55,10 +56,12 @@ void MainComponent::resized()
 {
     auto area = getLocalBounds();    
     auto titleHeight = 30;
+    auto windowWidth = area.getWidth();
     m_currencyLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
     m_dateLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
 	m_statueLabel.setBounds(area.removeFromBottom(20).reduced(5));
-	m_latestRateComponent.setBounds(area.reduced(10));
+	m_latestRateComponent.setBounds(area.removeFromLeft(windowWidth/2).reduced(10));
+    m_historicalRateComponent.setBounds(area.reduced(10));
 }
 
 

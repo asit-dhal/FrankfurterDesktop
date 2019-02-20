@@ -148,3 +148,8 @@ std::string toStdString(Currency currency)
     default: return std::string("South African rand");
     }
 }
+
+bool operator<(Currency c1, Currency c2)
+{
+    return static_cast<std::underlying_type_t<Currency>>(c1) < static_cast<std::underlying_type_t<Currency>>(c2);
+}

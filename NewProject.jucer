@@ -22,6 +22,14 @@
             file="Source/LatestRateModel.h"/>
       <FILE id="OCH9kX" name="Utility.h" compile="0" resource="0" file="Source/Utility.h"/>
       <FILE id="EhTctg" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="JMURKP" name="HistoricalRateComponent.cpp" compile="1" resource="0"
+            file="Source/HistoricalRateComponent.cpp"/>
+      <FILE id="ISNgwb" name="HistoricalRateComponent.h" compile="0" resource="0"
+            file="Source/HistoricalRateComponent.h"/>
+      <FILE id="kIFTiL" name="HistoricalRateModel.cpp" compile="1" resource="0"
+            file="Source/HistoricalRateModel.cpp"/>
+      <FILE id="UfflQS" name="HistoricalRateModel.h" compile="0" resource="0"
+            file="Source/HistoricalRateModel.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
