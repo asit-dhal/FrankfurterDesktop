@@ -1,17 +1,17 @@
-/* 
+/*
  * This file is part of the CurrencyExchangeData distribution (https://github.com/asit-dhal/CurrencyExchangeData ).
  * Copyright (c) 2018 Asit Dhal.
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -42,9 +42,9 @@ JsonRequest::Response JsonRequest::execute ()
         fields.writeAsJSON (output, 0, false, 20);
         urlRequest = urlRequest.withPOSTData (output.toString());
     }
-        
+
     ScopedPointer<InputStream> in (urlRequest.createInputStream (hasFields, nullptr, nullptr, stringPairArrayToHeaderString(headers), 0, &response.headers, &response.status, 5, verb));
-        
+
     response.result = checkInputStream (in);
     TRACE_CLS(JsonRequest, "status=" + std::to_string(response.status));
     if (response.result.failed())
@@ -54,7 +54,7 @@ JsonRequest::Response JsonRequest::execute ()
     }
 
     response.bodyAsString = in->readEntireStreamAsString();
-    
+
     return response;
 }
 
@@ -62,7 +62,7 @@ JsonRequest::Response JsonRequest::execute ()
 void JsonRequest::setGet (const String& endpoint)
 {
     verb = "GET";
-    this->endpoint = endpoint;    
+    this->endpoint = endpoint;
 }
 
 void JsonRequest::setField (const String& name, const var& value)
@@ -74,7 +74,7 @@ const URL& JsonRequest::getURL() const
 {
     return url;
 }
-    
+
 const String& JsonRequest::getBodyAsString() const
 {
     return bodyAsString;
@@ -85,7 +85,7 @@ Result JsonRequest::checkInputStream (InputStream* in)
     if (! in) return Result::fail ("HTTP request failed, check your internet connection");
     return Result::ok();
 }
-    
+
 String JsonRequest::stringPairArrayToHeaderString(StringPairArray stringPairArray)
 {
     String result;
@@ -108,7 +108,7 @@ ThreadPoolJob::JobStatus JsonRequest::runJob()
         TRACE_CLS(JsonRequest, "Exception: " + String(e.what()));
     }
     signalJobShouldExit();
-	return ThreadPoolJob::JobStatus::jobHasFinished;
+    return ThreadPoolJob::JobStatus::jobHasFinished;
 }
 
 const JsonRequest::Response JsonRequest::getLastResponse() const

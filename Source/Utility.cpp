@@ -16,7 +16,7 @@ GlobalInstance::GlobalInstance(): m_threadPool(3)
 
 ThreadPool& GlobalInstance::getThreadPool()
 {
-	return m_threadPool;
+    return m_threadPool;
 }
 
 JUCE_IMPLEMENT_SINGLETON(GlobalInstance);
