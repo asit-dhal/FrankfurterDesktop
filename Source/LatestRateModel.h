@@ -16,7 +16,8 @@
 
 class LatestRateModel :
 	public Thread::Listener,
-	public AsyncUpdater
+	public AsyncUpdater,
+	public TableListBoxModel
 {
 public:
 	class Listener
@@ -33,6 +34,12 @@ public:
 	std::vector<std::pair<Currency, double>> getCurrencySpotPrices() const;
 	Time getTimeOfLastUpdate() const;
 	void refresh();
+
+	// model behavior
+	int getNumRows() override;
+	void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
+	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
+	int getColumnAutoSizeWidth(int columnId) override;
 
 private:
 	LatestRateModel();

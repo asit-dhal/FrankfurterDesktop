@@ -39,6 +39,7 @@ LatestRateComponent::LatestRateComponent()
 	m_filterText.addListener(this);
 
 	LatestRateModel::getInstance()->addListener(this);
+	m_table.setModel(LatestRateModel::getInstance());
 }
 
 LatestRateComponent::~LatestRateComponent()
@@ -61,79 +62,8 @@ void LatestRateComponent::resized()
 
 void LatestRateComponent::modelUpdated()
 {
-	m_baseCurrency = LatestRateModel::getInstance()->getBaseCurrency();
-	m_time = LatestRateModel::getInstance()->getTimeOfLastUpdate();
-	m_currencySpotPrices = LatestRateModel::getInstance()->getCurrencySpotPrices();
 	m_table.updateContent();
 	m_table.autoSizeAllColumns();
-}
-
-int LatestRateComponent::getNumRows()
-{
-	return static_cast<int>(m_currencySpotPrices.size());
-}
-
-void LatestRateComponent::paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected)
-{
-	auto alternateColour = getLookAndFeel().findColour(ListBox::backgroundColourId)
-		.interpolatedWith(getLookAndFeel().findColour(ListBox::textColourId), 0.03f);
-	if (rowIsSelected)
-		g.fillAll(Colours::lightblue);
-	else if (rowNumber % 2)
-		g.fillAll(alternateColour);
-}
-
-void LatestRateComponent::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
-{
-	if (rowNumber >= m_currencySpotPrices.size())
-		return;
-	g.setColour(rowIsSelected ? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
-	g.setFont(font);
-
-	String text;
-	if (columnId == 1)
-	{
-		text = String(describe(m_currencySpotPrices.at(rowNumber).first));
-	}
-	else
-	{
-		text = String(std::to_string(m_currencySpotPrices.at(rowNumber).second));
-	}
-
-	g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
-
-	g.setColour(getLookAndFeel().findColour(ListBox::backgroundColourId));
-	g.fillRect(width - 1, 0, 1, height);
-}
-
-int LatestRateComponent::getColumnAutoSizeWidth(int columnId)
-{
-	int widest = 50;
-	for (auto i = getNumRows(); --i >= 0;)
-	{
-		String text;
-		if (columnId == 1)
-		{
-			text = String(describe(m_currencySpotPrices.at(i).first));
-		}
-		else
-		{
-			text = String(std::to_string(m_currencySpotPrices.at(i).second));
-		}
-		widest = jmax(widest, font.getStringWidth(text));
-
-	}
-	return widest + 8;
-}
-
-Currency LatestRateComponent::getBaseCurrency() const
-{
-	return m_baseCurrency;
-}
-
-Time LatestRateComponent::getLatestRateTime() const
-{
-	return m_time;
 }
 
 void LatestRateComponent::addListener(Listener* listener)
@@ -154,13 +84,7 @@ void LatestRateComponent::labelTextChanged(Label* labelThatHasChanged)
 
 }
 
-
 void LatestRateComponent::buttonClicked(Button* button)
 {
 	LatestRateModel::getInstance()->refresh();
-}
-
-void LatestRateComponent::sortOrderChanged(int newSortColumnId, bool isForwards)
-{
-
 }

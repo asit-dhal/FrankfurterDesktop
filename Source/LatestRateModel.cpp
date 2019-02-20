@@ -13,6 +13,8 @@
 
 #include <boost/algorithm/string.hpp>
 
+JUCE_IMPLEMENT_SINGLETON(LatestRateModel);
+
 LatestRateModel::LatestRateModel() :
 	m_req("http://www.ecb.europa.eu")
 {
@@ -111,6 +113,60 @@ void LatestRateModel::parseResponse(String response)
 	}
 }
 
+int LatestRateModel::getNumRows()
+{
+	return static_cast<int>(m_currencySpotPrices.size());
+}
 
+void LatestRateModel::paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected)
+{
+	auto alternateColour = TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::backgroundColourId)
+		.interpolatedWith(TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId), 0.03f);
+	if (rowIsSelected)
+		g.fillAll(Colours::lightblue);
+	else if (rowNumber % 2)
+		g.fillAll(alternateColour);
+}
 
-JUCE_IMPLEMENT_SINGLETON(LatestRateModel);
+void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
+{
+	if (rowNumber >= m_currencySpotPrices.size())
+		return;
+	g.setColour(rowIsSelected ? Colours::darkblue : TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId));
+	g.setFont({ 14.0f });
+
+	String text;
+	if (columnId == 1)
+	{
+		text = String(describe(m_currencySpotPrices.at(rowNumber).first));
+	}
+	else
+	{
+		text = String(std::to_string(m_currencySpotPrices.at(rowNumber).second));
+	}
+
+	g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
+
+	g.setColour(TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::backgroundColourId));
+	g.fillRect(width - 1, 0, 1, height);
+}
+
+int LatestRateModel::getColumnAutoSizeWidth(int columnId)
+{
+	int widest = 50;
+	for (auto i = getNumRows(); --i >= 0;)
+	{
+		String text;
+		if (columnId == 1)
+		{
+			text = String(describe(m_currencySpotPrices.at(i).first));
+		}
+		else
+		{
+			text = String(std::to_string(m_currencySpotPrices.at(i).second));
+		}
+		widest = jmax(widest, Font({ 14.0f }).getStringWidth(text));
+
+	}
+	return widest + 8;
+}
