@@ -37,7 +37,7 @@ public:
     int getColumnAutoSizeWidth(int columnId) override;
 
     void setHistoricalRateByCurrency(const Currency& currency);
-    
+
 
 private:
     HistoricalRateModel();
