@@ -10,6 +10,7 @@
 
 #include "LatestRateModel.h"
 #include "HistoricalRateModel.h"
+#include "FlagIcons.h"
 #include "Utility.h"
 
 #include <boost/algorithm/string.hpp>
@@ -138,11 +139,8 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
 
 	String text;
     if (columnId == 1) {
-        auto image = GlobalInstance::getInstance()->getIcon(toString(m_currencySpotPrices.at(rowNumber).first));
-        if (image) {
-            image->drawWithin(g, Rectangle<float>(0, 0, width, height), RectanglePlacement::stretchToFit, 0);
-            return;
-        }
+        Image icon = getIconForCurrency(m_currencySpotPrices.at(rowNumber).first);
+        g.drawImageWithin(icon, 0, 0, width, height, RectanglePlacement::RectanglePlacement::Flags::centred);
     }
 	else if (columnId == 2) {
 		text = String(describe(m_currencySpotPrices.at(rowNumber).first));
@@ -188,7 +186,7 @@ void LatestRateModel::selectedRowsChanged(int lastRowSelected)
 std::map<int, String> LatestRateModel::getColumnNames()
 {
     std::map<int, String> cols;
-    cols.insert({ static_cast<int>(Column::eCurrency), "Currency Code" });
+    cols.insert({ static_cast<int>(Column::eCountry), "Country" });
     cols.insert({ static_cast<int>(Column::eCurrencyName), "Currency Name" });
     cols.insert({ static_cast<int>(Column::eSpotPrice), "Spot Price" });
     return cols;

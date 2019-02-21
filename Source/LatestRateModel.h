@@ -22,7 +22,7 @@ class LatestRateModel :
 public:
     enum class Column
     {
-        eCurrency = 1,
+        eCountry = 1,
         eCurrencyName,
         eSpotPrice
     };

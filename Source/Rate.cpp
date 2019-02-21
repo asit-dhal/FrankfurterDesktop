@@ -27,6 +27,7 @@
 */
 
 #include "Rate.h"
+#include "FlagIcons.h"
 #include <boost/algorithm/string.hpp>
 
 
@@ -157,4 +158,43 @@ String toString(Currency currency)
 bool operator<(Currency c1, Currency c2)
 {
     return static_cast<std::underlying_type_t<Currency>>(c1) < static_cast<std::underlying_type_t<Currency>>(c2);
+}
+
+Image getIconForCurrency(Currency c)
+{
+    switch (c) {
+    case Currency::EUR: return ImageCache::getFromMemory(FlagIcons::EUR_png, FlagIcons::EUR_pngSize);
+    case Currency::USD: return ImageCache::getFromMemory(FlagIcons::USD_png, FlagIcons::USD_pngSize);
+    case Currency::JPY: return ImageCache::getFromMemory(FlagIcons::JPY_png, FlagIcons::JPY_pngSize);
+    case Currency::BGN: return ImageCache::getFromMemory(FlagIcons::BGN_png, FlagIcons::BGN_pngSize);
+    case Currency::CZK: return ImageCache::getFromMemory(FlagIcons::CZK_png, FlagIcons::CZK_pngSize);
+    case Currency::DKK: return ImageCache::getFromMemory(FlagIcons::DKK_png, FlagIcons::DKK_pngSize);
+    case Currency::GBP: return ImageCache::getFromMemory(FlagIcons::GBP_png, FlagIcons::GBP_pngSize);
+    case Currency::HUF: return ImageCache::getFromMemory(FlagIcons::HUF_png, FlagIcons::HUF_pngSize);
+    case Currency::PLN: return ImageCache::getFromMemory(FlagIcons::PLN_png, FlagIcons::PLN_pngSize);
+    case Currency::RON: return ImageCache::getFromMemory(FlagIcons::RON_png, FlagIcons::RON_pngSize);
+    case Currency::SEK: return ImageCache::getFromMemory(FlagIcons::SEK_png, FlagIcons::SEK_pngSize);
+    case Currency::CHF: return ImageCache::getFromMemory(FlagIcons::CHF_png, FlagIcons::CHF_pngSize);
+    case Currency::ISK: return ImageCache::getFromMemory(FlagIcons::ISK_png, FlagIcons::ISK_pngSize);
+    case Currency::NOK: return ImageCache::getFromMemory(FlagIcons::NOK_png, FlagIcons::NOK_pngSize);
+    case Currency::HRK: return ImageCache::getFromMemory(FlagIcons::HRK_png, FlagIcons::HRK_pngSize);
+    case Currency::RUB: return ImageCache::getFromMemory(FlagIcons::RUB_png, FlagIcons::RUB_pngSize);
+    case Currency::TRY: return ImageCache::getFromMemory(FlagIcons::TRY_png, FlagIcons::TRY_pngSize);
+    case Currency::AUD: return ImageCache::getFromMemory(FlagIcons::AUD_png, FlagIcons::AUD_pngSize);
+    case Currency::BRL: return ImageCache::getFromMemory(FlagIcons::BRL_png, FlagIcons::BRL_pngSize);
+    case Currency::CAD: return ImageCache::getFromMemory(FlagIcons::CAD_png, FlagIcons::CAD_pngSize);
+    case Currency::CNY: return ImageCache::getFromMemory(FlagIcons::CNY_png, FlagIcons::CNY_pngSize);
+    case Currency::HKD: return ImageCache::getFromMemory(FlagIcons::HKD_png, FlagIcons::HKD_pngSize);
+    case Currency::IDR: return ImageCache::getFromMemory(FlagIcons::IDR_png, FlagIcons::IDR_pngSize);
+    case Currency::ILS: return ImageCache::getFromMemory(FlagIcons::ILS_png, FlagIcons::ILS_pngSize);
+    case Currency::INR: return ImageCache::getFromMemory(FlagIcons::INR_png, FlagIcons::INR_pngSize);
+    case Currency::KRW: return ImageCache::getFromMemory(FlagIcons::KRW_png, FlagIcons::KRW_pngSize);
+    case Currency::MXN: return ImageCache::getFromMemory(FlagIcons::MXN_png, FlagIcons::MXN_pngSize);
+    case Currency::MYR: return ImageCache::getFromMemory(FlagIcons::MYR_png, FlagIcons::MYR_pngSize);
+    case Currency::NZD: return ImageCache::getFromMemory(FlagIcons::NZD_png, FlagIcons::NZD_pngSize);
+    case Currency::PHP: return ImageCache::getFromMemory(FlagIcons::PHP_png, FlagIcons::PHP_pngSize);
+    case Currency::SGD: return ImageCache::getFromMemory(FlagIcons::SGD_png, FlagIcons::SGD_pngSize);
+    case Currency::THB: return ImageCache::getFromMemory(FlagIcons::THB_png, FlagIcons::THB_pngSize);
+    case Currency::ZAR: return ImageCache::getFromMemory(FlagIcons::ZAR_png, FlagIcons::ZAR_pngSize);
+    }
 }
