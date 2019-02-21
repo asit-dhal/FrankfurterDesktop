@@ -40,9 +40,9 @@ class GlobalInstance
 {
 public:
     ThreadPool& getThreadPool();
-
 private:
     GlobalInstance();
+    void loadIconsFromZipFile();
     ThreadPool m_threadPool;
 
 public:

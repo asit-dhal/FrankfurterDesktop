@@ -77,4 +77,8 @@ Currency fromStdString(std::string str);
 
 std::string toStdString(Currency currency);
 
+String toString(Currency currency);
+
 bool operator<(Currency c1, Currency c2);
+
+Image getIconForCurrency(Currency c);

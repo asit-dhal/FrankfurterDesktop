@@ -20,6 +20,15 @@ class LatestRateModel :
     public TableListBoxModel
 {
 public:
+    enum class Column
+    {
+        eCountry = 1,
+        eCurrencyName,
+        eSpotPrice
+    };
+
+    static std::map<int, String> getColumnNames();
+
     class Listener
     {
     public:

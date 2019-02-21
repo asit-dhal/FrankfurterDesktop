@@ -31,9 +31,10 @@ LatestRateComponent::LatestRateComponent()
     m_table.setColour(ListBox::outlineColourId, Colours::grey);
     m_table.setOutlineThickness(1);
 
-    m_table.getHeader().addColumn("Currency", 1, 50);
-    m_table.getHeader().addColumn("Spot Price", 2, 50);
-
+    for (auto const& e : LatestRateModel::getColumnNames())
+    {
+        m_table.getHeader().addColumn(e.second, e.first, 50);
+    }
 
     m_filterText.addListener(this);
 

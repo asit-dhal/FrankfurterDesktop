@@ -138,6 +138,7 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\FlagIcons.cpp"/>
     <ClCompile Include="..\..\Source\LatestRateComponent.cpp"/>
     <ClCompile Include="..\..\Source\JsonRequest.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
@@ -1356,6 +1357,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\FlagIcons.h"/>
     <ClInclude Include="..\..\Source\LatestRateComponent.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
     <ClInclude Include="..\..\Source\JsonRequest.h"/>
