@@ -21,7 +21,10 @@
 class NewProjectApplication  : public JUCEApplication
 {
 public:
-    NewProjectApplication() {}
+    NewProjectApplication()
+    {
+        Logger::setCurrentLogger(FileLogger::createDateStampedLogger("CurrencyExchanger", "ouput", ".log", "Hallo"));
+    }
 
     const String getApplicationName() override       { return ProjectInfo::projectName; }
     const String getApplicationVersion() override    { return ProjectInfo::versionString; }

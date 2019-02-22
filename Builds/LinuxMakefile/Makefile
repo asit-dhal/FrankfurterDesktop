@@ -68,6 +68,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS_APP := \
+  $(JUCE_OBJDIR)/HistoricalRatePlotComponent_8d6cb5d3.o \
   $(JUCE_OBJDIR)/FlagIcons_aaeb856f.o \
   $(JUCE_OBJDIR)/LatestRateComponent_a2052317.o \
   $(JUCE_OBJDIR)/JsonRequest_29eac768.o \
@@ -98,6 +99,11 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : $(OBJECTS_APP) $(RESOURCES)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
 	$(V_AT)$(CXX) -o $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) $(OBJECTS_APP) $(JUCE_LDFLAGS) $(JUCE_LDFLAGS_APP) $(RESOURCES) $(TARGET_ARCH)
+
+$(JUCE_OBJDIR)/HistoricalRatePlotComponent_8d6cb5d3.o: ../../Source/HistoricalRatePlotComponent.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling HistoricalRatePlotComponent.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/FlagIcons_aaeb856f.o: ../../Source/FlagIcons.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)

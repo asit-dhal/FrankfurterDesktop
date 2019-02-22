@@ -36,15 +36,20 @@
 #define TRACE_CLS_LINE(cls) DBG(String("Time=") + String(std::to_string(Time::currentTimeMillis())) + " tid=" + String::toHexString ((int64)Thread::getCurrentThreadId()) + " " + String(#cls) + "::" + __FUNCTION__ + ":" +  String(__LINE__))
 
 
-class GlobalInstance
+class GlobalInstance : private DeletedAtShutdown
 {
 public:
     ThreadPool& getThreadPool();
+    ~GlobalInstance() {
+        DBG("Jobs still running: " << m_threadPool.getNamesOfAllJobs(true).joinIntoString(",") << " will be killed");
+        m_threadPool.removeAllJobs(true, 500);
+        clearSingletonInstance();
+    }
+
 private:
     GlobalInstance();
-    void loadIconsFromZipFile();
     ThreadPool m_threadPool;
 
 public:
-    JUCE_DECLARE_SINGLETON(GlobalInstance, false);
+    JUCE_DECLARE_SINGLETON(GlobalInstance, true);
 };

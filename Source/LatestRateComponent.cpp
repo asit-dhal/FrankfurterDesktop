@@ -23,7 +23,7 @@ LatestRateComponent::LatestRateComponent()
     m_filterText.attachToComponent(&m_table, false);
     m_filterText.showEditor();
 
-    addAndMakeVisible(&m_refreshButton);
+    addAndMakeVisible(m_refreshButton);
     m_refreshButton.setButtonText("Refresh");
     m_refreshButton.addListener(this);
 

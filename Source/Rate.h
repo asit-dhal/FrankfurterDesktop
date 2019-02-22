@@ -82,3 +82,7 @@ String toString(Currency currency);
 bool operator<(Currency c1, Currency c2);
 
 Image getIconForCurrency(Currency c);
+
+/*
+String getCurrencySymbol(Currency c);
+*/

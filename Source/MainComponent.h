@@ -21,6 +21,7 @@
 #include "LatestRateModel.h"
 #include "LatestRateComponent.h"
 #include "HistoricalRateComponent.h"
+#include "HistoricalRatePlotComponent.h"
 #include <vector>
 #include <tuple>
 
@@ -47,6 +48,7 @@ private:
     Label m_dateLabel;
     LatestRateComponent m_latestRateComponent;
     HistoricalRateComponent m_historicalRateComponent;
+    HistoricalRatePlotComponent m_historicalRatePlotComponent;
     Label m_statueLabel;
     Font font           { 14.0f };
 

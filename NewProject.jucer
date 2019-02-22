@@ -4,6 +4,10 @@
               cppLanguageStandard="17" splashScreenColour="Light">
   <MAINGROUP id="uU5xi1" name="CurrencyExchanger">
     <GROUP id="{5C0247CA-588B-DA27-71D3-A5905731F4BD}" name="Source">
+      <FILE id="vuaCUG" name="HistoricalRatePlotComponent.cpp" compile="1"
+            resource="0" file="Source/HistoricalRatePlotComponent.cpp"/>
+      <FILE id="PnhGAp" name="HistoricalRatePlotComponent.h" compile="0"
+            resource="0" file="Source/HistoricalRatePlotComponent.h"/>
       <FILE id="DbDsGe" name="FlagIcons.cpp" compile="1" resource="0" file="Source/FlagIcons.cpp"/>
       <FILE id="aRSLXa" name="FlagIcons.h" compile="0" resource="0" file="Source/FlagIcons.h"/>
       <FILE id="fbkajZ" name="LatestRateComponent.cpp" compile="1" resource="0"

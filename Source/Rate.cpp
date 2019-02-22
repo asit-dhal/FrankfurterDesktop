@@ -198,3 +198,46 @@ Image getIconForCurrency(Currency c)
     case Currency::ZAR: return ImageCache::getFromMemory(FlagIcons::ZAR_png, FlagIcons::ZAR_pngSize);
     }
 }
+
+/*
+String getCurrencySymbol(Currency c)
+{
+    switch (c)
+    {
+    case Currency::EUR: return String("€");
+    case Currency::USD: return String("$");
+    case Currency::JPY: return String("¥");
+    case Currency::BGN: return String("лв");
+    case Currency::CZK: return String("Kč");
+    case Currency::DKK: return String("kr");
+    case Currency::GBP: return String("£");
+    case Currency::HUF: return String("Ft");
+    case Currency::PLN: return String("zł");
+    case Currency::RON: return String("L");
+    case Currency::SEK: return String("kr");
+    case Currency::CHF: return String("₣");
+    case Currency::ISK: return String("Kr");
+    case Currency::NOK: return String("kr");
+    case Currency::HRK: return String("Kn");
+    case Currency::RUB: return String("р.");
+    case Currency::TRY: return String("₤");
+    case Currency::AUD: return String("$");
+    case Currency::BRL: return String("R$");
+    case Currency::CAD: return String("$");
+    case Currency::CNY: return String("¥");
+    case Currency::HKD: return String("$");
+    case Currency::IDR: return String("Rp");
+    case Currency::ILS: return CharPointer_UTF8(u8"\xE2\x82\xAA");
+    case Currency::INR: return String(u8"₹");
+    case Currency::KRW: return String("₩");
+    case Currency::MXN: return String("$");
+    case Currency::MYR: return String("RM");
+    case Currency::NZD: return String("$");
+    case Currency::PHP: return String("₱");
+    case Currency::SGD: return String("$");
+    case Currency::THB: return String("฿");
+    case Currency::ZAR: return String("R");
+    default: return String("");
+    }
+}
+*/

@@ -37,7 +37,7 @@ public:
     int getColumnAutoSizeWidth(int columnId) override;
 
     void setHistoricalRateByCurrency(const Currency& currency);
-
+    std::vector<std::pair<Time, double>> getHistoricalRates() const;
 
 private:
     HistoricalRateModel();

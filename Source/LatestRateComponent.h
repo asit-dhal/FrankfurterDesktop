@@ -25,6 +25,7 @@ public:
     class Listener
     {
     public:
+        virtual ~Listener() = default;
         virtual void dataUpdated() = 0;
         virtual void statusChanged(String message) = 0;
     };

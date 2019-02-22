@@ -23,6 +23,10 @@
 
 MainComponent::MainComponent()
 {
+#if JUCE_MAC || JUCE_WINDOWS
+    getLookAndFeel().setDefaultSansSerifTypefaceName("Arial Unicode MS");
+#endif
+
     m_currencyLabel.setJustificationType (Justification::centred);
     m_dateLabel.setJustificationType (Justification::centred);
     m_statueLabel.setJustificationType(Justification::left);
@@ -31,11 +35,12 @@ MainComponent::MainComponent()
     m_dateLabel.setFont (Font (16.0f, Font::bold));
     m_statueLabel.setFont(font);
 
-    addAndMakeVisible(&m_currencyLabel);
-    addAndMakeVisible(&m_dateLabel);
-    addAndMakeVisible(&m_latestRateComponent);
-    addAndMakeVisible(&m_historicalRateComponent);
-    addAndMakeVisible(&m_statueLabel);
+    addAndMakeVisible(m_currencyLabel);
+    addAndMakeVisible(m_dateLabel);
+    addAndMakeVisible(m_latestRateComponent);
+    addAndMakeVisible(m_historicalRateComponent);
+    addAndMakeVisible(m_historicalRatePlotComponent);
+    addAndMakeVisible(m_statueLabel);
 
     setSize (600, 400);
 
@@ -60,8 +65,12 @@ void MainComponent::resized()
     m_currencyLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
     m_dateLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
     m_statueLabel.setBounds(area.removeFromBottom(20).reduced(5));
-    m_latestRateComponent.setBounds(area.removeFromLeft(windowWidth/2).reduced(10));
-    m_historicalRateComponent.setBounds(area.reduced(10));
+    auto latestRateComponentWith = (windowWidth * 3) / 10;
+    auto historicalRateComponentWidth = (windowWidth * 1.5) / 10;
+
+    m_latestRateComponent.setBounds(area.removeFromLeft(latestRateComponentWith).reduced(10));
+    m_historicalRateComponent.setBounds(area.removeFromLeft(historicalRateComponentWidth).reduced(10));
+    m_historicalRatePlotComponent.setBounds(area.reduced(10));
 }
 
 

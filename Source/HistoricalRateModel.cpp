@@ -99,14 +99,23 @@ void HistoricalRateModel::setHistoricalRateByCurrency(const Currency& currency)
 {
     m_selectedCurrencyData.clear();
 
+    auto i = 0;
     for (auto e : m_historicalRates) {
         auto itr = e.second.find(currency);
         if (itr != e.second.end()) {
+            i++;
             m_selectedCurrencyData.push_back(std::make_pair(e.first, itr->second));
         }
     }
 
+    DBG("Selected Currency: " << toStdString(currency));
+
     informListener();
+}
+
+std::vector<std::pair<Time, double>> HistoricalRateModel::getHistoricalRates() const
+{
+    return m_selectedCurrencyData;
 }
 
 int HistoricalRateModel::getNumRows()
