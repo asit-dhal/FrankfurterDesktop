@@ -11,15 +11,17 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "HistoricalRatePlotComponent.h"
 
-//==============================================================================
-
-const int HistoricalRatePlotComponent::X_OFFSET = 50;
+const int HistoricalRatePlotComponent::X_OFFSET = 100;
 const int HistoricalRatePlotComponent::Y_OFFSET = 50;
+const int HistoricalRatePlotComponent::X_GRID_LINE_COUNT = 10;
+const int HistoricalRatePlotComponent::Y_GRID_LINE_COUNT = 10;
 
 HistoricalRatePlotComponent::HistoricalRatePlotComponent()
 {
+    m_statueLabel.setFont(Font(16.0f, Font::bold));
     auto modelInstance = HistoricalRateModel::getInstance();
     modelInstance->addListener(this);
+    addMouseListener(this, false);
 }
 
 HistoricalRatePlotComponent::~HistoricalRatePlotComponent()
@@ -28,12 +30,6 @@ HistoricalRatePlotComponent::~HistoricalRatePlotComponent()
 
 void HistoricalRatePlotComponent::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
 
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));   // clear the background
 
@@ -43,116 +39,121 @@ void HistoricalRatePlotComponent::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (14.0f);
 
-    transformDataToCoordinates(g);
-    drawAxesAndGrid(g);
-    plot(g);
+    auto area = getLocalBounds();
+
+    drawAxes(g);
+    if (!HistoricalRateModel::getInstance()->getHistoricalRates().empty())
+    {
+        transformDataToCoordinates();
+        drawGridsAndLabels(g);
+        plot(g);
+    }
 }
 
-void HistoricalRatePlotComponent::drawAxesAndGrid(Graphics& g)
+void HistoricalRatePlotComponent::drawAxes(Graphics& g)
 {
     auto width = getLocalBounds().getWidth();
     auto height = getLocalBounds().getHeight();
-
 
     Line<float> xAxis(X_OFFSET, height - Y_OFFSET, width - X_OFFSET, height - Y_OFFSET);
     Line<float> yAxis(X_OFFSET, Y_OFFSET, X_OFFSET, height - Y_OFFSET);
 
     g.drawLine(xAxis, 2);
     g.drawLine(yAxis, 2);
+}
+
+void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
+{
+    auto width = getLocalBounds().getWidth();
+    auto height = getLocalBounds().getHeight();
 
     auto xAxisLength = width - X_OFFSET * 2;
     auto yAxisLength = height - Y_OFFSET * 2;
 
     // x-grids
-    for (auto i = X_OFFSET * 2; i < yAxisLength; i += yAxisLength / 10)
+    for (auto i = Y_OFFSET; i < yAxisLength; i += yAxisLength / X_GRID_LINE_COUNT)
     {
         g.drawLine(X_OFFSET, i, width - X_OFFSET, i, 0.5);
+        auto rate = yCoordinateToRate(i);
+        String text = String(std::to_string(rate));
+        auto textWidth = Font({ 14.0f }).getStringWidth(text);
+        auto textHeight = Font({ 14.0f }).getHeight();
+        g.drawText(text, X_OFFSET - textWidth - 5, i - textHeight/2, textWidth, textHeight, Justification::centred);
+
     }
+
+    // y-grids
+
     auto modelData = HistoricalRateModel::getInstance()->getHistoricalRates();
     std::vector<String> xAxisData;
-    std::vector<String> yAxisData;
     for (auto const& e : modelData)
     {
         xAxisData.push_back(e.first.formatted(String("%d-%m-%Y")));
     }
 
-
-
-
-    if (xAxisData.empty())
-        return;
-
     auto labelWidth = Font({ 14.0f }).getStringWidth(xAxisData.front());
 
-    auto xAxisStepValue = xAxisLength / (labelWidth * 2);
-
-    // y-axis
-    auto yGridLineCnt = 0;
-    for (auto i = X_OFFSET + labelWidth + labelWidth /2; i < xAxisLength; i += (labelWidth + labelWidth / 2))
+    auto index = 0;
+    for (auto i = X_OFFSET + labelWidth + labelWidth / 2; i <= width - X_OFFSET; i += (labelWidth + labelWidth / 2))
     {
-        yGridLineCnt++;
         g.drawLine(i, Y_OFFSET, i, height - Y_OFFSET, 0.5);
-    }
 
-    auto stepValue = xAxisData.size() / yGridLineCnt;
-
-    auto index = stepValue;
-    for (auto i = X_OFFSET + labelWidth + labelWidth / 2; i < xAxisLength; i += (labelWidth + labelWidth / 2))
-    {
         String text = xAxisData.at(index);
         auto textWidth = Font({ 14.0f }).getStringWidth(text);
         auto textHeight = Font({ 14.0f }).getHeight();
         g.drawText(text, i - labelWidth / 2, height - Y_OFFSET + 10, textWidth, textHeight, Justification::centred);
-        index += stepValue;
+        index += m_xAxisStepValue;
     }
 
 }
 
-void HistoricalRatePlotComponent::transformDataToCoordinates(Graphics& g)
+void HistoricalRatePlotComponent::transformDataToCoordinates()
 {
     auto modelData = HistoricalRateModel::getInstance()->getHistoricalRates();
     if (modelData.empty())
         return;
+
     auto width = getLocalBounds().getWidth();
     auto height = getLocalBounds().getHeight();
-
     auto realWidth = width - 2*X_OFFSET;
     auto realHeight = height - 2*Y_OFFSET;
 
     DBG("width=" << width << " height=" << width << " realWidth=" << realWidth << " realHeight=" << realHeight);
 
     m_coordinates.clear();
+    m_timeToXCoordinateMappings.clear();
+
     m_coordinates.resize(modelData.size());
 
-    auto xAxisStep = realWidth / modelData.size();
+    m_xAxisStepValue = realWidth / modelData.size();
 
-    auto i = 0;
-    for (auto const& e : modelData)
+    for (auto i=0; i < modelData.size(); i++)
     {
-        m_coordinates[i].setX(X_OFFSET + i * xAxisStep);
-        i++;
+        auto xCoordinate = X_OFFSET + i * m_xAxisStepValue;
+        m_timeToXCoordinateMappings[modelData.at(i).first] = xCoordinate;
+        m_coordinates[i].setX(xCoordinate);
     }
+
+    //==============================================================================
 
     std::vector<double> historicalValues;
     for (auto const& e : modelData) {
         historicalValues.push_back(e.second);
     }
 
-    double minY = 0.0, maxY = 0.0;
     auto minMax = std::minmax_element(historicalValues.begin(), historicalValues.end());
-    minY = *(std::get<0>(minMax));
-    maxY = *(std::get<1>(minMax));
+    m_minRate = *(std::get<0>(minMax));
+    m_maxRate = *(std::get<1>(minMax));
 
-    DBG("minY=" << minY << " maxY=" << maxY);
-    i = 0;
-    auto rangeY = maxY - minY;
-    auto yAxisStep = realHeight / rangeY;
-    DBG("yAxis step=" << yAxisStep);
+    DBG("minY=" << m_minRate << " maxY=" << m_maxRate);
+    auto rangeY = m_maxRate - m_minRate;
+    m_yAxisStepValue = realHeight / rangeY;
+    DBG("yAxis step=" << m_yAxisStepValue);
 
+    auto  i = 0;
     for (auto const& e : modelData)
     {
-        DBG("e.second=" << e.second << " yAxisStep * (e.second-minY)=" << yAxisStep * (e.second - minY));
-        m_coordinates[i].setY(realHeight- yAxisStep * (e.second-minY));
+        m_coordinates[i].setY(rateToYCoordinate(e.second));
         i++;
     }
 }
@@ -183,4 +184,32 @@ void HistoricalRatePlotComponent::resized()
 void HistoricalRatePlotComponent::modelUpdated()
 {
     repaint();
+}
+
+float HistoricalRatePlotComponent::rateToYCoordinate(float currentRate)
+{
+    auto height = getLocalBounds().getHeight();
+    auto coordinate = height - Y_OFFSET - m_yAxisStepValue * (currentRate - m_minRate);
+    return coordinate;
+}
+
+float HistoricalRatePlotComponent::yCoordinateToRate(float currentCoordinate)
+{
+    auto height = getLocalBounds().getHeight();
+    auto rate = (height- currentCoordinate + Y_OFFSET) / m_yAxisStepValue + m_minRate;
+    return rate;
+}
+
+
+void HistoricalRatePlotComponent::mouseMove(const MouseEvent &event)
+{
+    auto width = getLocalBounds().getWidth();
+    auto height = getLocalBounds().getHeight();
+    auto realWidth = width - 2 * X_OFFSET;
+    auto realHeight = height - 2 * Y_OFFSET;
+
+    if (event.x > X_OFFSET && event.x < realWidth && event.y > Y_OFFSET && event.y < realHeight)
+    {
+        repaint();
+    }
 }
