@@ -5,12 +5,15 @@ image:
 
 environment:
   MSBUILD_FLAGS: /maxcpucount
-  BOOST_ROOT: C:/Libraries/boost_1_59_0
+  BOOST_ROOT: C:/Libraries/boost_1_67_0
 
 
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - set INCLUDE=C:\Libraries\boost_1_59_0;%INCLUDE%
+  - cd C:\Libraries\boost_1_67_0
+  - cd boost
+  - dir
+  - set "INCLUDE=C:\Libraries\boost_1_67_0;%INCLUDE%"
 
 build_script:
   - cd C:\projects\CurrencyExchange\Builds\VisualStudio2017

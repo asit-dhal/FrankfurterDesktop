@@ -28,8 +28,6 @@
 
 #include "Rate.h"
 #include "FlagIcons.h"
-#include <boost/algorithm/string.hpp>
-
 
 std::string describe(Currency currency)
 {
@@ -74,38 +72,38 @@ std::string describe(Currency currency)
 
 Currency fromStdString(std::string str)
 {
-    if (boost::iequals(str, "EUR")) return Currency::EUR;
-    else if (boost::iequals(str, "USD")) return Currency::USD;
-    else if (boost::iequals(str, "JPY")) return Currency::JPY;
-    else if (boost::iequals(str, "BGN")) return Currency::BGN;
-    else if (boost::iequals(str, "CZK")) return Currency::CZK;
-    else if (boost::iequals(str, "DKK")) return Currency::DKK;
-    else if (boost::iequals(str, "GBP")) return Currency::GBP;
-    else if (boost::iequals(str, "HUF")) return Currency::HUF;
-    else if (boost::iequals(str, "PLN")) return Currency::PLN;
-    else if (boost::iequals(str, "RON")) return Currency::RON;
-    else if (boost::iequals(str, "SEK")) return Currency::SEK;
-    else if (boost::iequals(str, "CHF")) return Currency::CHF;
-    else if (boost::iequals(str, "ISK")) return Currency::ISK;
-    else if (boost::iequals(str, "NOK")) return Currency::NOK;
-    else if (boost::iequals(str, "HRK")) return Currency::HRK;
-    else if (boost::iequals(str, "RUB")) return Currency::RUB;
-    else if (boost::iequals(str, "TRY")) return Currency::TRY;
-    else if (boost::iequals(str, "AUD")) return Currency::AUD;
-    else if (boost::iequals(str, "BRL")) return Currency::BRL;
-    else if (boost::iequals(str, "CAD")) return Currency::CAD;
-    else if (boost::iequals(str, "CNY")) return Currency::CNY;
-    else if (boost::iequals(str, "HKD")) return Currency::HKD;
-    else if (boost::iequals(str, "IDR")) return Currency::IDR;
-    else if (boost::iequals(str, "ILS")) return Currency::ILS;
-    else if (boost::iequals(str, "INR")) return Currency::INR;
-    else if (boost::iequals(str, "KRW")) return Currency::KRW;
-    else if (boost::iequals(str, "MXN")) return Currency::MXN;
-    else if (boost::iequals(str, "MYR")) return Currency::MYR;
-    else if (boost::iequals(str, "NZD")) return Currency::NZD;
-    else if (boost::iequals(str, "PHP")) return Currency::PHP;
-    else if (boost::iequals(str, "SGD")) return Currency::SGD;
-    else if (boost::iequals(str, "THB")) return Currency::THB;
+    if (str == std::string("EUR")) return Currency::EUR;
+    else if (str == std::string("USD")) return Currency::USD;
+    else if (str == std::string("JPY")) return Currency::JPY;
+    else if (str == std::string("BGN")) return Currency::BGN;
+    else if (str == std::string("CZK")) return Currency::CZK;
+    else if (str == std::string("DKK")) return Currency::DKK;
+    else if (str == std::string("GBP")) return Currency::GBP;
+    else if (str == std::string("HUF")) return Currency::HUF;
+    else if (str == std::string("PLN")) return Currency::PLN;
+    else if (str == std::string("RON")) return Currency::RON;
+    else if (str == std::string("SEK")) return Currency::SEK;
+    else if (str == std::string("CHF")) return Currency::CHF;
+    else if (str == std::string("ISK")) return Currency::ISK;
+    else if (str == std::string("NOK")) return Currency::NOK;
+    else if (str == std::string("HRK")) return Currency::HRK;
+    else if (str == std::string("RUB")) return Currency::RUB;
+    else if (str == std::string("TRY")) return Currency::TRY;
+    else if (str == std::string("AUD")) return Currency::AUD;
+    else if (str == std::string("BRL")) return Currency::BRL;
+    else if (str == std::string("CAD")) return Currency::CAD;
+    else if (str == std::string("CNY")) return Currency::CNY;
+    else if (str == std::string("HKD")) return Currency::HKD;
+    else if (str == std::string("IDR")) return Currency::IDR;
+    else if (str == std::string("ILS")) return Currency::ILS;
+    else if (str == std::string("INR")) return Currency::INR;
+    else if (str == std::string("KRW")) return Currency::KRW;
+    else if (str == std::string("MXN")) return Currency::MXN;
+    else if (str == std::string("MYR")) return Currency::MYR;
+    else if (str == std::string("NZD")) return Currency::NZD;
+    else if (str == std::string("PHP")) return Currency::PHP;
+    else if (str == std::string("SGD")) return Currency::SGD;
+    else if (str == std::string("THB")) return Currency::THB;
     else return Currency::ZAR;
 }
 

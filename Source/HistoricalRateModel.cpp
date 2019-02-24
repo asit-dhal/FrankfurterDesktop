@@ -11,8 +11,6 @@
 #include "HistoricalRateModel.h"
 #include "Utility.h"
 
-#include <boost/algorithm/string.hpp>
-
 JUCE_IMPLEMENT_SINGLETON(HistoricalRateModel);
 
 HistoricalRateModel::HistoricalRateModel() :
@@ -70,8 +68,8 @@ void HistoricalRateModel::parseResponse(String response)
                         if (cubeOuter->hasAttribute("time"))
                         {
                             auto date = cubeOuter->getStringAttribute("time").toStdString();
-                            std::vector<std::string> timeTokens;
-                            boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
+                            std::vector<std::string> timeTokens = split(date, '-');
+                            //boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
                             time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1, std::stoi(timeTokens.at(2)), 0, 0);
                         }
                         if (cubeOuter->hasTagName("Cube"))
