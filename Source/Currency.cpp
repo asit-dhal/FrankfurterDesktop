@@ -14,8 +14,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#include "Rate.h"
+#include "Currency.h"
 #include "FlagIcons.h"
 
 std::string describe(Currency currency)

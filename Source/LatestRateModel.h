@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Rate.h"
+#include "Currency.h"
 #include "JsonRequest.h"
 
 class LatestRateModel :

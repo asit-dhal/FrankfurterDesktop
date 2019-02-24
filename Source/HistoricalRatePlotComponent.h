@@ -50,8 +50,8 @@ private:
 
     float m_xAxisStepValue = 0.0;
     float m_yAxisStepValue = 0.0;
-    double m_minRate = 0.0;
-    double m_maxRate = 0.0;
+    float m_minRate = 0.0;
+    float m_maxRate = 0.0;
 
     Label m_statueLabel;
     std::vector<Listener*> m_listeners;
