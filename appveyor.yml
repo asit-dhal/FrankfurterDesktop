@@ -1,24 +1,26 @@
 version: configuring.{build}
 
+configuration:
+  - Release
+  - Debug
+
 image: 
   - Visual Studio 2017
 
 environment:
   MSBUILD_FLAGS: /maxcpucount
-  BOOST_ROOT: C:/Libraries/boost_1_67_0
 
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cd C:\Libraries\boost_1_67_0
-  - cd boost
-  - dir
-  - set "INCLUDE=C:\Libraries\boost_1_67_0;%INCLUDE%"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
 build_script:
   - cd C:\projects\CurrencyExchange\Builds\VisualStudio2017
-  - msbuild.exe CurrencyExchanger.sln /t:Build /p:Configuration=Release;Platform=x64
+  - msbuild.exe CurrencyExchanger.sln /t:Build /p:Configuration=%CONFIGURATION%;Platform=x64
+
+after_build:
+  - cp C:\projects\CurrencyExchange\Builds\VisualStudio2017\x64\%CONFIGURATION%\App\CurrencyExchanger.exe C:\projects\CurrencyExchange\CurrencyExchanger-%CONFIGURATION%.exe
 
 artifacts:
-  - path: Builds\VisualStudio2017\x64\Release\App\CurrencyExchanger.exe
+  - path: CurrencyExchanger-%CONFIGURATION%.exe
     name: CurrencyExchanger
