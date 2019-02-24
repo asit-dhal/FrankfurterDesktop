@@ -24,3 +24,13 @@ after_build:
 artifacts:
   - path: CurrencyExchanger-%CONFIGURATION%.exe
     name: CurrencyExchanger
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: m5JDr9ALQMAAOtAweZtEKJeLGQ56709udQPNqridia3yqS5ZZvcRlcSeNss68btl
+  artifact: CurrencyExchanger-%CONFIGURATION%.exe
+  draft: false
+  prerelease: false
+  on:
+    appveyor_repo_tag: true

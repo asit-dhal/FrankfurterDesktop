@@ -197,17 +197,19 @@ void HistoricalRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)
         return isForwards ? less : !less;
     };
 
-    auto column2Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
-        bool less = false;
-        if (lhs.second < rhs.second) less = true;
-        else if (rhs.second < lhs.second) less = false;
+    /*auto column2Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
+        auto lhsVal = static_cast<int>(lhs.second * 10000);
+        auto rhsVal = static_cast<int>(rhs.second * 10000);
+        auto less = !(lhsVal > rhsVal);
         return isForwards ? less : !less;
-    };
+    };*/
+
+
 
     if (newSortColumnId == 1) {
         std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column1Comparator);
     }
-    else if (newSortColumnId == 2) {
+    /*else if (newSortColumnId == 2) {
         std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column2Comparator);
-    }
+    }*/
 }
