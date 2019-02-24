@@ -1,0 +1,43 @@
+# Copyright(c) 2018 Asit Dhal.
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
+language: cpp
+sudo: required
+dist: trusty
+
+#compiler:
+#  - gcc
+#  - clang
+
+configuration:
+  - Release
+  - Debug
+
+matrix:
+  include:
+  - os: linux
+    compiler: gcc
+    env:
+      - CXX_COMPILER=g++-7
+      - C_COMPILER=gcc-7
+    addons:
+      apt:
+        sources: ["ubuntu-toolchain-r-test"]
+        packages: ["g++-7", "ninja-build"]
+  - os: linux
+    compiler: clang
+    env:
+      - CXX_COMPILER=clang++-5.0
+      - C_COMPILER=clang-5.0
+    addons:
+      apt:
+        sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
+        packages: ["clang-5.0", "g++-7", "ninja-build"]
+
+before_install:
+  - export CXX=${CXX_COMPILER}
+  - export CC=${C_COMPILER}
+
+script:
+  - cd Builds/LinuxMakefile
+  - make
