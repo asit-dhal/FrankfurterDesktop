@@ -59,10 +59,10 @@ JsonRequest::Response JsonRequest::execute ()
 }
 
 
-void JsonRequest::setGet (const String& endpoint)
+void JsonRequest::setGet (const String& remote)
 {
     verb = "GET";
-    this->endpoint = endpoint;
+    this->endpoint = remote;
 }
 
 void JsonRequest::setField (const String& name, const var& value)
@@ -105,7 +105,7 @@ ThreadPoolJob::JobStatus JsonRequest::runJob()
     }
     catch(const std::exception &e)
     {
-        TRACE_CLS(JsonRequest, "Exception: " + String(e.what()));
+        DBG("Exception: " << e.what());
     }
     signalJobShouldExit();
     return ThreadPoolJob::JobStatus::jobHasFinished;
