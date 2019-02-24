@@ -16,8 +16,6 @@
 
 class LatestRateComponent :
     public Component,
-    public Label::Listener,
-    public Button::Listener,
     public LatestRateModel::Listener
 {
 public:
@@ -38,15 +36,11 @@ public:
     void modelUpdated() override;
     void addListener(Listener* listener);
     void informListener();
-    void labelTextChanged(Label* labelThatHasChanged) override;
-    void buttonClicked(Button* button) override;
 
 private:
     TableListBox m_table{ {}, nullptr };
     Font font{ 14.0f };
     std::vector<Listener*> m_listeners;
-    Label m_filterText;
-    TextButton m_refreshButton;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LatestRateComponent)

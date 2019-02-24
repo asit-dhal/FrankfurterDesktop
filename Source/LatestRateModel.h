@@ -42,7 +42,6 @@ public:
     Currency getBaseCurrency() const;
     std::vector<std::pair<Currency, double>> getCurrencySpotPrices() const;
     Time getTimeOfLastUpdate() const;
-    void refresh();
 
     // model behavior
     int getNumRows() override;

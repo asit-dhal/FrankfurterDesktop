@@ -60,12 +60,6 @@ Time LatestRateModel::getTimeOfLastUpdate() const
     return m_time;
 }
 
-void LatestRateModel::refresh()
-{
-    m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
-    GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
-}
-
 void LatestRateModel::parseResponse(String response)
 {
     std::map<Currency, double> rates;
