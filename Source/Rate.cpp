@@ -182,7 +182,9 @@ Image getIconForCurrency(Currency c)
     case Currency::PHP: return ImageCache::getFromMemory(FlagIcons::PHP_png, FlagIcons::PHP_pngSize);
     case Currency::SGD: return ImageCache::getFromMemory(FlagIcons::SGD_png, FlagIcons::SGD_pngSize);
     case Currency::THB: return ImageCache::getFromMemory(FlagIcons::THB_png, FlagIcons::THB_pngSize);
-    case Currency::ZAR: return ImageCache::getFromMemory(FlagIcons::ZAR_png, FlagIcons::ZAR_pngSize);
+    case Currency::ZAR:
+    default: // code coverage
+        return ImageCache::getFromMemory(FlagIcons::ZAR_png, FlagIcons::ZAR_pngSize);
     }
 }
 

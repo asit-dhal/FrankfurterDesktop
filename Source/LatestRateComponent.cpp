@@ -51,6 +51,8 @@ void LatestRateComponent::modelUpdated()
 {
     m_table.updateContent();
     m_table.autoSizeAllColumns();
+    if (m_table.getNumRows() > 0)
+        m_table.selectRow(0);
 }
 
 void LatestRateComponent::addListener(Listener* listener)

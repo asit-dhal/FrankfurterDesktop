@@ -30,7 +30,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void modelUpdated() override;
-    
+
 private:
     void drawAxes(Graphics&);
     void drawGridsAndLabels(Graphics&);

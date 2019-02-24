@@ -19,6 +19,8 @@
 #include "FlagIcons.h"
 #include "Utility.h"
 
+#include <sstream>
+
 JUCE_IMPLEMENT_SINGLETON(LatestRateModel);
 
 LatestRateModel::LatestRateModel() :
@@ -129,6 +131,7 @@ void LatestRateModel::paintRowBackground(Graphics& g, int rowNumber, int, int, b
 
 void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
+    std::ostringstream buffer;
     if (rowNumber >= m_currencySpotPrices.size())
         return;
     g.setColour(rowIsSelected ? Colours::darkblue : TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId));
@@ -143,7 +146,11 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
         text = String(describe(m_currencySpotPrices.at(rowNumber).first));
     }
     else {
-        text = String(std::to_string(m_currencySpotPrices.at(rowNumber).second));
+        buffer.str("");
+        buffer.clear();
+        buffer.precision(4);
+        buffer << std::fixed << m_currencySpotPrices.at(rowNumber).second;
+        text = String(buffer.str());
     }
 
     g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
@@ -155,6 +162,8 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
 int LatestRateModel::getColumnAutoSizeWidth(int columnId)
 {
     int widest = 50;
+    std::ostringstream buffer;
+
     for (auto i = getNumRows(); --i >= 0;) {
         String text;
         if (columnId == 1) {
@@ -164,7 +173,11 @@ int LatestRateModel::getColumnAutoSizeWidth(int columnId)
             text = String(describe(m_currencySpotPrices.at(i).first));
         }
         else {
-            text = String(std::to_string(m_currencySpotPrices.at(i).second));
+            buffer.str("");
+            buffer.clear();
+            buffer.precision(4);
+            buffer << std::fixed << m_currencySpotPrices.at(i).second;
+            text = String(buffer.str());
         }
         widest = jmax(widest, Font({ 20.0f }).getStringWidth(text));
 

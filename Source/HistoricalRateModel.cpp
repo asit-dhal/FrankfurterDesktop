@@ -17,7 +17,7 @@
 #include "HistoricalRateModel.h"
 #include "Utility.h"
 
-#include <limits>
+#include <sstream>
 
 JUCE_IMPLEMENT_SINGLETON(HistoricalRateModel);
 
@@ -58,7 +58,6 @@ void HistoricalRateModel::handleAsyncUpdate()
 void HistoricalRateModel::parseResponse(String response)
 {
     m_historicalRates.clear();
-    std::map<Currency, double> rates;
     m_baseCurrency = fromStdString("EUR");
 
     if (auto xml = parseXML(response))
@@ -77,7 +76,6 @@ void HistoricalRateModel::parseResponse(String response)
                         {
                             auto date = cubeOuter->getStringAttribute("time").toStdString();
                             std::vector<std::string> timeTokens = split(date, '-');
-                            //boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
                             time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1, std::stoi(timeTokens.at(2)), 0, 0);
                         }
                         if (cubeOuter->hasTagName("Cube"))
@@ -141,6 +139,7 @@ void HistoricalRateModel::paintRowBackground(Graphics& g, int rowNumber, int, in
 
 void HistoricalRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
+    std::ostringstream buffer;
     if (rowNumber >= m_selectedCurrencyData.size())
         return;
     g.setColour(rowIsSelected ? Colours::darkblue : TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId));
@@ -153,7 +152,11 @@ void HistoricalRateModel::paintCell(Graphics& g, int rowNumber, int columnId, in
     }
     else
     {
-        text = String(std::to_string(m_selectedCurrencyData.at(rowNumber).second));
+        buffer.str("");
+        buffer.clear();
+        buffer.precision(4);
+        buffer << std::fixed << m_selectedCurrencyData.at(rowNumber).second;
+        text = String(buffer.str());
     }
 
     g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
@@ -165,6 +168,7 @@ void HistoricalRateModel::paintCell(Graphics& g, int rowNumber, int columnId, in
 int HistoricalRateModel::getColumnAutoSizeWidth(int columnId)
 {
     int widest = 50;
+    std::ostringstream buffer;
     for (auto i = getNumRows(); --i >= 0;)
     {
         String text;
@@ -174,7 +178,11 @@ int HistoricalRateModel::getColumnAutoSizeWidth(int columnId)
         }
         else
         {
-            text = String(std::to_string(m_selectedCurrencyData.at(i).second));
+            buffer.str("");
+            buffer.clear();
+            buffer.precision(4);
+            buffer << std::fixed << m_selectedCurrencyData.at(i).second;
+            text = String(buffer.str());
         }
         widest = jmax(widest, Font({ 14.0f }).getStringWidth(text));
 
