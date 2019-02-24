@@ -15,7 +15,6 @@
 
 class HistoricalRatePlotComponent :
     public Component,
-    public MouseListener,
     public HistoricalRateModel::Listener
 {
 public:
