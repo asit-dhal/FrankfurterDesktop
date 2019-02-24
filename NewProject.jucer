@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="oLBhZF" name="CurrencyExchanger" projectType="guiapp" jucerVersion="5.4.2"
-              cppLanguageStandard="17" splashScreenColour="Light">
+              cppLanguageStandard="14" splashScreenColour="Light" reportAppUsage="0">
   <MAINGROUP id="uU5xi1" name="CurrencyExchanger">
     <GROUP id="{5C0247CA-588B-DA27-71D3-A5905731F4BD}" name="Source">
       <FILE id="vuaCUG" name="HistoricalRatePlotComponent.cpp" compile="1"
