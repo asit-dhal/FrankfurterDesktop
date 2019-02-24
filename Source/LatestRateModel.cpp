@@ -188,3 +188,31 @@ std::map<int, String> LatestRateModel::getColumnNames()
     cols.insert({ static_cast<int>(Column::eSpotPrice), "Spot Price" });
     return cols;
 }
+
+void LatestRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)
+{
+    auto column1Comparator = [&](const std::pair<Currency, double>& lhs, const std::pair<Currency, double>& rhs) {
+        auto less = toStdString(lhs.first) < toStdString(rhs.first);
+        return isForwards ? less : !less;
+    };
+
+    auto column2Comparator = [&](const std::pair<Currency, double>& lhs, const std::pair<Currency, double>& rhs) {
+        auto less = describe(lhs.first) < describe(rhs.first);
+        return isForwards ? less : !less;
+    };
+
+    auto column3Comparator = [&](const std::pair<Currency, double>& lhs, const std::pair<Currency, double>& rhs) {
+        auto less = lhs.second < rhs.second;
+        return isForwards ? less : !less;
+    };
+
+    if (newSortColumnId == 1) {
+        std::sort(std::begin(m_currencySpotPrices), std::end(m_currencySpotPrices), column1Comparator);
+    }
+    else if (newSortColumnId == 2) {
+        std::sort(std::begin(m_currencySpotPrices), std::end(m_currencySpotPrices), column2Comparator);
+    }
+    else if (newSortColumnId == 3) {
+        std::sort(std::begin(m_currencySpotPrices), std::end(m_currencySpotPrices), column3Comparator);
+    }
+}

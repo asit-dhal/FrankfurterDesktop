@@ -55,6 +55,7 @@ public:
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
     int getColumnAutoSizeWidth(int columnId) override;
     void selectedRowsChanged(int lastRowSelected) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 
 private:
     LatestRateModel();

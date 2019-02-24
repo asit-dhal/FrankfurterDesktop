@@ -17,6 +17,8 @@
 #include "HistoricalRateModel.h"
 #include "Utility.h"
 
+#include <limits>
+
 JUCE_IMPLEMENT_SINGLETON(HistoricalRateModel);
 
 HistoricalRateModel::HistoricalRateModel() :
@@ -178,4 +180,26 @@ int HistoricalRateModel::getColumnAutoSizeWidth(int columnId)
 
     }
     return widest + 8;
+}
+
+void HistoricalRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)
+{
+    auto column1Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
+        auto less = lhs.first < rhs.first;
+        return isForwards ? less : !less;
+    };
+
+    auto column2Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
+        bool less = false;
+        if (lhs.second < rhs.second) less = true;
+        else if (rhs.second < lhs.second) less = false;
+        return isForwards ? less : !less;
+    };
+
+    if (newSortColumnId == 1) {
+        std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column1Comparator);
+    }
+    else if (newSortColumnId == 2) {
+        std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column2Comparator);
+    }
 }

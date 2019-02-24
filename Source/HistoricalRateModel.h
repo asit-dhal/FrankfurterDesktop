@@ -36,11 +36,13 @@ public:
     void exitSignalSent() override;
     void handleAsyncUpdate() override;
     void addListener(Listener* listener);
+
     // model behavior
     int getNumRows() override;
     void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
     int getColumnAutoSizeWidth(int columnId) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 
     void setHistoricalRateByCurrency(const Currency& currency);
     std::vector<std::pair<Time, double>> getHistoricalRates() const;
