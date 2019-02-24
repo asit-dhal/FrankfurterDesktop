@@ -27,7 +27,6 @@ HistoricalRatePlotComponent::HistoricalRatePlotComponent()
     m_statueLabel.setFont(Font(16.0f, Font::bold));
     auto modelInstance = HistoricalRateModel::getInstance();
     modelInstance->addListener(this);
-    addMouseListener(this, false);
 }
 
 HistoricalRatePlotComponent::~HistoricalRatePlotComponent()
@@ -204,18 +203,4 @@ float HistoricalRatePlotComponent::yCoordinateToRate(float currentCoordinate)
     auto height = getLocalBounds().getHeight();
     auto rate = (height- currentCoordinate + Y_OFFSET) / m_yAxisStepValue + m_minRate;
     return rate;
-}
-
-
-void HistoricalRatePlotComponent::mouseMove(const MouseEvent &event)
-{
-    auto width = getLocalBounds().getWidth();
-    auto height = getLocalBounds().getHeight();
-    auto realWidth = width - 2 * X_OFFSET;
-    auto realHeight = height - 2 * Y_OFFSET;
-
-    if (event.x > X_OFFSET && event.x < realWidth && event.y > Y_OFFSET && event.y < realHeight)
-    {
-        repaint();
-    }
 }

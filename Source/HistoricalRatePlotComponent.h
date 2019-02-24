@@ -30,8 +30,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void modelUpdated() override;
-    void mouseMove(const MouseEvent &event) override;
-
+    
 private:
     void drawAxes(Graphics&);
     void drawGridsAndLabels(Graphics&);
