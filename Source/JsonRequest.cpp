@@ -1,5 +1,4 @@
 /*
- * This file is part of the CurrencyExchangeData distribution (https://github.com/asit-dhal/CurrencyExchangeData ).
  * Copyright (c) 2018 Asit Dhal.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +12,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
-/*
-  ==============================================================================
-
-    JsonRequest.cpp
-    Created: 23 Sep 2018 9:00:24pm
-    Author:  asit
-
-  ==============================================================================
 */
 
 #include "JsonRequest.h"

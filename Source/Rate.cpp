@@ -1,5 +1,4 @@
 /*
- * This file is part of the CurrencyExchangeData distribution (https://github.com/asit-dhal/CurrencyExchangeData ).
  * Copyright (c) 2018 Asit Dhal.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,16 +14,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-/*
-  ==============================================================================
-
-    Currency.cpp
-    Created: 23 Sep 2018 10:56:08pm
-    Author:  asit
-
-  ==============================================================================
-*/
 
 #include "Rate.h"
 #include "FlagIcons.h"

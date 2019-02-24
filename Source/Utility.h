@@ -1,5 +1,4 @@
 /*
- * This file is part of the CurrencyExchangeData distribution (https://github.com/asit-dhal/CurrencyExchangeData ).
  * Copyright (c) 2018 Asit Dhal.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +12,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
-/*
-  ==============================================================================
-
-    utility.h
-    Created: 26 Sep 2018 1:21:41am
-    Author:  asit
-
-  ==============================================================================
 */
 
 #pragma once
