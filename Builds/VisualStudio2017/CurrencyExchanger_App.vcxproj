@@ -138,17 +138,17 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\HistoricalRatePlotComponent.cpp"/>
+    <ClCompile Include="..\..\Source\component\HistoricalRateComponent.cpp"/>
+    <ClCompile Include="..\..\Source\component\HistoricalRatePlotComponent.cpp"/>
+    <ClCompile Include="..\..\Source\component\LatestRateComponent.cpp"/>
+    <ClCompile Include="..\..\Source\model\HistoricalRateModel.cpp"/>
+    <ClCompile Include="..\..\Source\model\LatestRateModel.cpp"/>
     <ClCompile Include="..\..\Source\FlagIcons.cpp"/>
-    <ClCompile Include="..\..\Source\LatestRateComponent.cpp"/>
     <ClCompile Include="..\..\Source\JsonRequest.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Currency.cpp"/>
     <ClCompile Include="..\..\Source\Utility.cpp"/>
-    <ClCompile Include="..\..\Source\LatestRateModel.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
-    <ClCompile Include="..\..\Source\HistoricalRateComponent.cpp"/>
-    <ClCompile Include="..\..\Source\HistoricalRateModel.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1336,16 +1336,16 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\HistoricalRatePlotComponent.h"/>
+    <ClInclude Include="..\..\Source\component\HistoricalRateComponent.h"/>
+    <ClInclude Include="..\..\Source\component\HistoricalRatePlotComponent.h"/>
+    <ClInclude Include="..\..\Source\component\LatestRateComponent.h"/>
+    <ClInclude Include="..\..\Source\model\HistoricalRateModel.h"/>
+    <ClInclude Include="..\..\Source\model\LatestRateModel.h"/>
     <ClInclude Include="..\..\Source\FlagIcons.h"/>
-    <ClInclude Include="..\..\Source\LatestRateComponent.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
     <ClInclude Include="..\..\Source\JsonRequest.h"/>
     <ClInclude Include="..\..\Source\Currency.h"/>
-    <ClInclude Include="..\..\Source\LatestRateModel.h"/>
     <ClInclude Include="..\..\Source\Utility.h"/>
-    <ClInclude Include="..\..\Source\HistoricalRateComponent.h"/>
-    <ClInclude Include="..\..\Source\HistoricalRateModel.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

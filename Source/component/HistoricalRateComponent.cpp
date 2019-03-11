@@ -17,6 +17,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "HistoricalRateComponent.h"
 
+namespace component
+{
+
 HistoricalRateComponent::HistoricalRateComponent()
 {
     addAndMakeVisible(&m_table);
@@ -26,16 +29,12 @@ HistoricalRateComponent::HistoricalRateComponent()
     m_table.getHeader().addColumn("Date", 1, 50);
     m_table.getHeader().addColumn("Spot Price", 2, 50);
 
-    auto modelInstance = HistoricalRateModel::getInstance();
+    auto modelInstance = model::HistoricalRateModel::getInstance();
     modelInstance->addListener(this);
     m_table.setModel(modelInstance);
-}
+ }
 
-HistoricalRateComponent::~HistoricalRateComponent()
-{
-}
-
-void HistoricalRateComponent::paint (Graphics&)
+void HistoricalRateComponent::paint(Graphics&)
 {
 }
 
@@ -51,3 +50,5 @@ void HistoricalRateComponent::modelUpdated()
     if (m_table.getNumRows() > 0)
         m_table.selectRow(0);
 }
+
+} // namespace component

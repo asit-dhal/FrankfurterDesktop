@@ -4,16 +4,32 @@
               splashScreenColour="Light" reportAppUsage="0">
   <MAINGROUP id="uU5xi1" name="CurrencyExchanger">
     <GROUP id="{5C0247CA-588B-DA27-71D3-A5905731F4BD}" name="Source">
-      <FILE id="vuaCUG" name="HistoricalRatePlotComponent.cpp" compile="1"
-            resource="0" file="Source/HistoricalRatePlotComponent.cpp"/>
-      <FILE id="PnhGAp" name="HistoricalRatePlotComponent.h" compile="0"
-            resource="0" file="Source/HistoricalRatePlotComponent.h"/>
+      <GROUP id="{2D3D82A8-FCA5-36BA-1425-D915207AC43D}" name="component">
+        <FILE id="M8lHoA" name="HistoricalRateComponent.cpp" compile="1" resource="0"
+              file="Source/component/HistoricalRateComponent.cpp"/>
+        <FILE id="SueUyF" name="HistoricalRateComponent.h" compile="0" resource="0"
+              file="Source/component/HistoricalRateComponent.h"/>
+        <FILE id="am6GZx" name="HistoricalRatePlotComponent.cpp" compile="1"
+              resource="0" file="Source/component/HistoricalRatePlotComponent.cpp"/>
+        <FILE id="yvahwe" name="HistoricalRatePlotComponent.h" compile="0"
+              resource="0" file="Source/component/HistoricalRatePlotComponent.h"/>
+        <FILE id="sEqF8N" name="LatestRateComponent.cpp" compile="1" resource="0"
+              file="Source/component/LatestRateComponent.cpp"/>
+        <FILE id="mArFI5" name="LatestRateComponent.h" compile="0" resource="0"
+              file="Source/component/LatestRateComponent.h"/>
+      </GROUP>
+      <GROUP id="{5A196CB6-0897-0C24-78C9-9C2AC7C8C648}" name="model">
+        <FILE id="g3zE9k" name="HistoricalRateModel.cpp" compile="1" resource="0"
+              file="Source/model/HistoricalRateModel.cpp"/>
+        <FILE id="DG7ZiQ" name="HistoricalRateModel.h" compile="0" resource="0"
+              file="Source/model/HistoricalRateModel.h"/>
+        <FILE id="Et5XS2" name="LatestRateModel.cpp" compile="1" resource="0"
+              file="Source/model/LatestRateModel.cpp"/>
+        <FILE id="kLquhw" name="LatestRateModel.h" compile="0" resource="0"
+              file="Source/model/LatestRateModel.h"/>
+      </GROUP>
       <FILE id="DbDsGe" name="FlagIcons.cpp" compile="1" resource="0" file="Source/FlagIcons.cpp"/>
       <FILE id="aRSLXa" name="FlagIcons.h" compile="0" resource="0" file="Source/FlagIcons.h"/>
-      <FILE id="fbkajZ" name="LatestRateComponent.cpp" compile="1" resource="0"
-            file="Source/LatestRateComponent.cpp"/>
-      <FILE id="i5jX0R" name="LatestRateComponent.h" compile="0" resource="0"
-            file="Source/LatestRateComponent.h"/>
       <FILE id="o38oK1" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="Tld1Ab" name="JsonRequest.cpp" compile="1" resource="0" file="Source/JsonRequest.cpp"/>
       <FILE id="NyrGtk" name="JsonRequest.h" compile="0" resource="0" file="Source/JsonRequest.h"/>
@@ -22,20 +38,8 @@
       <FILE id="j8gK0d" name="Currency.cpp" compile="1" resource="0" file="Source/Currency.cpp"/>
       <FILE id="uZze9J" name="Currency.h" compile="0" resource="0" file="Source/Currency.h"/>
       <FILE id="GmDxsr" name="Utility.cpp" compile="1" resource="0" file="Source/Utility.cpp"/>
-      <FILE id="EoeCS1" name="LatestRateModel.cpp" compile="1" resource="0"
-            file="Source/LatestRateModel.cpp"/>
-      <FILE id="E4qhEM" name="LatestRateModel.h" compile="0" resource="0"
-            file="Source/LatestRateModel.h"/>
       <FILE id="OCH9kX" name="Utility.h" compile="0" resource="0" file="Source/Utility.h"/>
       <FILE id="EhTctg" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="JMURKP" name="HistoricalRateComponent.cpp" compile="1" resource="0"
-            file="Source/HistoricalRateComponent.cpp"/>
-      <FILE id="ISNgwb" name="HistoricalRateComponent.h" compile="0" resource="0"
-            file="Source/HistoricalRateComponent.h"/>
-      <FILE id="kIFTiL" name="HistoricalRateModel.cpp" compile="1" resource="0"
-            file="Source/HistoricalRateModel.cpp"/>
-      <FILE id="UfflQS" name="HistoricalRateModel.h" compile="0" resource="0"
-            file="Source/HistoricalRateModel.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

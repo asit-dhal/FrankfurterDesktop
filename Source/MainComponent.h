@@ -17,16 +17,16 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "LatestRateModel.h"
-#include "LatestRateComponent.h"
-#include "HistoricalRateComponent.h"
-#include "HistoricalRatePlotComponent.h"
+#include "model/LatestRateModel.h"
+#include "component/LatestRateComponent.h"
+#include "component/HistoricalRateComponent.h"
+#include "component/HistoricalRatePlotComponent.h"
 #include <vector>
 #include <tuple>
 
 class MainComponent :
     public Component,
-    public LatestRateModel::Listener,
+    public model::LatestRateModel::Listener,
     public Timer
 {
 public:
@@ -45,9 +45,9 @@ public:
 private:
     Label m_currencyLabel;
     Label m_dateLabel;
-    LatestRateComponent m_latestRateComponent;
-    HistoricalRateComponent m_historicalRateComponent;
-    HistoricalRatePlotComponent m_historicalRatePlotComponent;
+    component::LatestRateComponent m_latestRateComponent;
+    component::HistoricalRateComponent m_historicalRateComponent;
+    component::HistoricalRatePlotComponent m_historicalRatePlotComponent;
     Label m_statueLabel;
     Font font           { 14.0f };
 

@@ -17,37 +17,42 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "JsonRequest.h"
-#include "LatestRateModel.h"
+#include "../JsonRequest.h"
+#include "../model/LatestRateModel.h"
+
+namespace component
+{
 
 class LatestRateComponent :
-    public Component,
-    public LatestRateModel::Listener
+        public Component,
+        public model::LatestRateModel::Listener
 {
-public:
+ public:
 
     class Listener
     {
-    public:
+     public:
         virtual ~Listener() = default;
         virtual void dataUpdated() = 0;
         virtual void statusChanged(String message) = 0;
     };
 
     LatestRateComponent();
-    ~LatestRateComponent();
+    ~LatestRateComponent() = default;
 
-    void paint (Graphics&) override;
+    void paint(Graphics&) override;
     void resized() override;
     void modelUpdated() override;
     void addListener(Listener* listener);
     void informListener();
 
-private:
+ private:
     TableListBox m_table{ {}, nullptr };
     Font font{ 14.0f };
     std::vector<Listener*> m_listeners;
 
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LatestRateComponent)
+ private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatestRateComponent)
 };
+
+} // namespace component

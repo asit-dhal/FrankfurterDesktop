@@ -16,29 +16,25 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LatestRateComponent.h"
-#include "Utility.h"
+#include "../Utility.h"
+
+namespace component
+{
 
 LatestRateComponent::LatestRateComponent()
 {
-
     addAndMakeVisible(&m_table);
     m_table.setColour(ListBox::outlineColourId, Colours::grey);
     m_table.setOutlineThickness(1);
 
-    for (auto const& e : LatestRateModel::getColumnNames())
-    {
+    for (auto const& e : model::LatestRateModel::getColumnNames())
         m_table.getHeader().addColumn(e.second, e.first, 50);
-    }
 
-    LatestRateModel::getInstance()->addListener(this);
-    m_table.setModel(LatestRateModel::getInstance());
+    model::LatestRateModel::getInstance()->addListener(this);
+    m_table.setModel(model::LatestRateModel::getInstance());
 }
 
-LatestRateComponent::~LatestRateComponent()
-{
-}
-
-void LatestRateComponent::paint (Graphics&)
+void LatestRateComponent::paint(Graphics&)
 {
 }
 
@@ -67,3 +63,5 @@ void LatestRateComponent::informListener()
         e->statusChanged(String("new data arrived"));
     }
 }
+
+} // namespace component

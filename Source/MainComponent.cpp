@@ -44,7 +44,7 @@ MainComponent::MainComponent()
 
     setSize (600, 400);
 
-    LatestRateModel::getInstance()->addListener(this);
+    model::LatestRateModel::getInstance()->addListener(this);
 
     TRACE_CLS_LINE(MainComponent);
 }
@@ -76,7 +76,7 @@ void MainComponent::resized()
 
 void MainComponent::modelUpdated()
 {
-    auto modelInstance = LatestRateModel::getInstance();
+    auto modelInstance = model::LatestRateModel::getInstance();
     auto baseCurrencyText = "Base Currency: " + String(describe(modelInstance->getBaseCurrency()));
     auto dateTimeText = "Foreign Exchange reference rates on " + modelInstance->getTimeOfLastUpdate().toString(true, false);
     m_currencyLabel.setText(baseCurrencyText, dontSendNotification);

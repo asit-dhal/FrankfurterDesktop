@@ -17,24 +17,29 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "HistoricalRateModel.h"
+#include "../model/HistoricalRateModel.h"
+
+namespace component
+{
 
 class HistoricalRateComponent :
-    public Component,
-    public HistoricalRateModel::Listener
-{
-public:
+        public Component,
+        public model::HistoricalRateModel::Listener
+ {
+ public:
     HistoricalRateComponent();
-    ~HistoricalRateComponent();
+    ~HistoricalRateComponent() = default;
 
-    void paint (Graphics&) override;
+    void paint(Graphics&) override;
     void resized() override;
     void modelUpdated() override;
 
-private:
+ private:
     TableListBox m_table{ {}, nullptr };
     Font font{ 14.0f };
 
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HistoricalRateComponent)
+ private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HistoricalRateComponent)
 };
+
+} // namespace component
