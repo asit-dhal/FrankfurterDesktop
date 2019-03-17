@@ -51,6 +51,7 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
+    model::LatestRateModel::getInstance()->removeListener(this);
 }
 
 void MainComponent::paint (Graphics&)
@@ -74,7 +75,7 @@ void MainComponent::resized()
 }
 
 
-void MainComponent::modelUpdated()
+void MainComponent::modelUpdated(model::LatestRateModel*)
 {
     auto modelInstance = model::LatestRateModel::getInstance();
     auto baseCurrencyText = "Base Currency: " + String(describe(modelInstance->getBaseCurrency()));

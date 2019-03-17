@@ -22,45 +22,44 @@
 namespace component
 {
 
-    class HistoricalRatePlotComponent :
-        public Component,
-        public model::HistoricalRateModel::Listener
-    {
-    public:
-        HistoricalRatePlotComponent();
-        ~HistoricalRatePlotComponent();
+class HistoricalRatePlotComponent : public Component,
+    public model::HistoricalRateModel::Listener
+{
+public:
+    HistoricalRatePlotComponent();
+    ~HistoricalRatePlotComponent();
 
-        void paint(Graphics&) override;
-        void resized() override;
-        void modelUpdated() override;
+    void paint(Graphics&) override;
+    void resized() override;
+    void modelUpdated(model::HistoricalRateModel*) override;
 
-    private:
-        void drawAxes(Graphics&);
-        void drawGridsAndLabels(Graphics&);
-        void transformDataToCoordinates();
-        void plot(Graphics&);
+private:
+    void drawAxes(Graphics&);
+    void drawGridsAndLabels(Graphics&);
+    void transformDataToCoordinates();
+    void plot(Graphics&);
 
-        float rateToYCoordinate(float currentRate);
-        float yCoordinateToRate(float currentCoordinate);
+    float rateToYCoordinate(float currentRate);
+    float yCoordinateToRate(float currentCoordinate);
 
-        std::vector<Point<float>> m_coordinates;
-        std::map<Time, float> m_timeToXCoordinateMappings;
+    std::vector<Point<float>> m_coordinates;
+    std::map<Time, float> m_timeToXCoordinateMappings;
 
-        static const int X_OFFSET;
-        static const int Y_OFFSET;
-        static const int X_GRID_LINE_COUNT;
-        static const int Y_GRID_LINE_COUNT;
+    static const int X_OFFSET;
+    static const int Y_OFFSET;
+    static const int X_GRID_LINE_COUNT;
+    static const int Y_GRID_LINE_COUNT;
 
-        float m_xAxisStepValue = 0.0;
-        float m_yAxisStepValue = 0.0;
-        float m_minRate = 0.0;
-        float m_maxRate = 0.0;
+    float m_xAxisStepValue = 0.0;
+    float m_yAxisStepValue = 0.0;
+    float m_minRate = 0.0;
+    float m_maxRate = 0.0;
 
-        Label m_statueLabel;
-        std::vector<Listener*> m_listeners;
+    Label m_statueLabel;
+    std::vector<Listener*> m_listeners;
 
-    private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HistoricalRatePlotComponent)
-    };
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HistoricalRatePlotComponent)
+};
 
 } // namespace component

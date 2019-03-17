@@ -34,6 +34,11 @@ LatestRateComponent::LatestRateComponent()
     m_table.setModel(model::LatestRateModel::getInstance());
 }
 
+LatestRateComponent::~LatestRateComponent()
+{
+    model::LatestRateModel::getInstance()->removeListener(this);
+}
+
 void LatestRateComponent::paint(Graphics&)
 {
 }
@@ -43,7 +48,7 @@ void LatestRateComponent::resized()
     m_table.setBounds(getLocalBounds());
 }
 
-void LatestRateComponent::modelUpdated()
+void LatestRateComponent::modelUpdated(model::LatestRateModel *)
 {
     m_table.updateContent();
     m_table.autoSizeAllColumns();

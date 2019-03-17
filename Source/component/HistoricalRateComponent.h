@@ -28,11 +28,11 @@ class HistoricalRateComponent :
  {
  public:
     HistoricalRateComponent();
-    ~HistoricalRateComponent() = default;
+    ~HistoricalRateComponent();
 
     void paint(Graphics&) override;
     void resized() override;
-    void modelUpdated() override;
+    void modelUpdated(model::HistoricalRateModel*) override;
 
  private:
     TableListBox m_table{ {}, nullptr };

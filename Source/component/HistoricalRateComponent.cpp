@@ -34,6 +34,11 @@ HistoricalRateComponent::HistoricalRateComponent()
     m_table.setModel(modelInstance);
  }
 
+HistoricalRateComponent::~HistoricalRateComponent()
+{
+    model::HistoricalRateModel::getInstance()->removeListener(this);
+}
+
 void HistoricalRateComponent::paint(Graphics&)
 {
 }
@@ -43,7 +48,7 @@ void HistoricalRateComponent::resized()
     m_table.setBounds(getLocalBounds());
 }
 
-void HistoricalRateComponent::modelUpdated()
+void HistoricalRateComponent::modelUpdated(model::HistoricalRateModel*)
 {
     m_table.updateContent();
     m_table.autoSizeAllColumns();

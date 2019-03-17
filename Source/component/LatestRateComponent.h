@@ -38,11 +38,11 @@ class LatestRateComponent :
     };
 
     LatestRateComponent();
-    ~LatestRateComponent() = default;
+    ~LatestRateComponent();
 
     void paint(Graphics&) override;
     void resized() override;
-    void modelUpdated() override;
+    void modelUpdated(model::LatestRateModel *) override;
     void addListener(Listener* listener);
     void informListener();
 

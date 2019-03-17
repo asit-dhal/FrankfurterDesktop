@@ -22,47 +22,49 @@
 
 namespace model
 {
-    class HistoricalRateModel :
-        public Thread::Listener,
-        public AsyncUpdater,
-        public TableListBoxModel
+
+class HistoricalRateModel : public Thread::Listener,
+    public AsyncUpdater,
+    public TableListBoxModel
+{
+public:
+    class Listener
     {
     public:
-        class Listener
-        {
-        public:
-            virtual ~Listener() = default;
-            virtual void modelUpdated() = 0;
-        };
-
-        void exitSignalSent() override;
-        void handleAsyncUpdate() override;
-        void addListener(Listener* listener);
-
-        // model behavior
-        int getNumRows() override;
-        void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
-        void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-        int getColumnAutoSizeWidth(int columnId) override;
-        void sortOrderChanged(int newSortColumnId, bool isForwards) override;
-
-        void setHistoricalRateByCurrency(const Currency& currency);
-        std::vector<std::pair<Time, double>> getHistoricalRates() const;
-
-    private:
-        HistoricalRateModel();
-        void informListener();
-        void parseResponse(String response);
-
-    private:
-        std::map<Time, std::map<Currency, double>> m_historicalRates;
-        Currency m_baseCurrency;
-        JsonRequest m_req;
-        std::vector<Listener*> m_listeners;
-        Currency m_selectedCurrency;
-        std::vector<std::pair<Time, double>> m_selectedCurrencyData;
-    public:
-        JUCE_DECLARE_SINGLETON(HistoricalRateModel, false);
+        virtual ~Listener() = default;
+        virtual void modelUpdated(HistoricalRateModel*) = 0;
     };
+
+    void addListener(Listener* listenerToAdd);
+    void removeListener(Listener* listenerToRemove);
+
+    void exitSignalSent() override;
+    void handleAsyncUpdate() override;
+    
+    // model behavior
+    int getNumRows() override;
+    void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
+    void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
+    int getColumnAutoSizeWidth(int columnId) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
+
+    void setHistoricalRateByCurrency(const Currency& currency);
+    std::vector<std::pair<Time, double>> getHistoricalRates() const;
+
+private:
+    HistoricalRateModel();
+    void informListener();
+    void parseResponse(String response);
+
+private:
+    std::map<Time, std::map<Currency, double>> m_historicalRates;
+    Currency m_baseCurrency;
+    JsonRequest m_req;
+    ListenerList<Listener> m_listeners;
+    Currency m_selectedCurrency;
+    std::vector<std::pair<Time, double>> m_selectedCurrencyData;
+public:
+    JUCE_DECLARE_SINGLETON(HistoricalRateModel, false);
+};
 
 } // namespace model

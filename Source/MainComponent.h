@@ -38,7 +38,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     //void handleAsyncUpdate() override;
-    void modelUpdated() override;
+    void modelUpdated(model::LatestRateModel*) override;
     //void statusChanged(String message) override;
     void timerCallback() override;
 

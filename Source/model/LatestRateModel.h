@@ -23,57 +23,58 @@
 namespace model
 {
 
-    class LatestRateModel :
-        public Thread::Listener,
-        public AsyncUpdater,
-        public TableListBoxModel
+class LatestRateModel : public Thread::Listener,
+    public AsyncUpdater,
+    public TableListBoxModel
+{
+ public:
+    enum class Column
     {
-    public:
-        enum class Column
-        {
-            eCountry = 1,
-            eCurrencyName,
-            eSpotPrice
-        };
-
-        static std::map<int, String> getColumnNames();
-
-        class Listener
-        {
-        public:
-            virtual ~Listener() = default;
-            virtual void modelUpdated() = 0;
-        };
-
-        void exitSignalSent() override;
-        void handleAsyncUpdate() override;
-        void addListener(Listener* listener);
-        Currency getBaseCurrency() const;
-        std::vector<std::pair<Currency, double>> getCurrencySpotPrices() const;
-        Time getTimeOfLastUpdate() const;
-
-        // model behavior
-        int getNumRows() override;
-        void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
-        void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-        int getColumnAutoSizeWidth(int columnId) override;
-        void selectedRowsChanged(int lastRowSelected) override;
-        void sortOrderChanged(int newSortColumnId, bool isForwards) override;
-
-    private:
-        LatestRateModel();
-        void informListener();
-        void parseResponse(String response);
-
-    private:
-        std::vector<std::pair<Currency, double>> m_currencySpotPrices;
-        Currency m_baseCurrency;
-        Time m_time;
-        JsonRequest m_req;
-        std::vector<Listener*> m_listeners;
-
-    public:
-        JUCE_DECLARE_SINGLETON(LatestRateModel, false);
+        eCountry = 1,
+        eCurrencyName,
+        eSpotPrice
     };
+
+    static std::map<int, String> getColumnNames();
+
+    class Listener
+    {
+     public:
+        virtual ~Listener() = default;
+        virtual void modelUpdated(LatestRateModel* ) = 0;
+    };
+
+    void addListener(Listener* listenerToAdd);
+    void removeListener(Listener* listenerToRemove);
+
+    void exitSignalSent() override;
+    void handleAsyncUpdate() override;
+    Currency getBaseCurrency() const;
+    std::vector<std::pair<Currency, double>> getCurrencySpotPrices() const;
+    Time getTimeOfLastUpdate() const;
+
+    // model behavior
+    int getNumRows() override;
+    void paintRowBackground(Graphics& g, int rowNumber, int, int, bool rowIsSelected) override;
+    void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
+    int getColumnAutoSizeWidth(int columnId) override;
+    void selectedRowsChanged(int lastRowSelected) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
+
+ private:
+    LatestRateModel();
+    void informListener();
+    void parseResponse(String response);
+
+ private:
+    std::vector<std::pair<Currency, double>> m_currencySpotPrices;
+    Currency m_baseCurrency;
+    Time m_time;
+    JsonRequest m_req;
+    ListenerList<Listener> m_listeners;
+
+ public:
+    JUCE_DECLARE_SINGLETON(LatestRateModel, false);
+};
 
 } // namespace model
