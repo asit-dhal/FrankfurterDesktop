@@ -1,6 +1,5 @@
 /*
- * This file is part of the CurrencyExchangeData distribution (https://github.com/asit-dhal/CurrencyExchangeData ).
- * Copyright (c) 2018 Asit Dhal.
+ * Copyright (c) 2018-2020 Asit Dhal.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
