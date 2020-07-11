@@ -1,4 +1,4 @@
-version: configuring.{build}
+version: 0.0.1-{build}
 
 configuration:
   - Release
@@ -7,30 +7,34 @@ configuration:
 image: 
   - Visual Studio 2017
 
-environment:
-  MSBUILD_FLAGS: /maxcpucount
+platform: 
+  - x64
+
+branches:
+  only:
+    - master
+
+matrix:
+  fast_finish: false
+  exclude:
+    - platform: win32
+      image: Visual Studio 2017
 
 
-install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+build:
+  parallel: true  
 
 build_script:
-  - cd C:\projects\CurrencyExchange\Builds\VisualStudio2017
-  - msbuild.exe CurrencyExchanger.sln /t:Build /p:Configuration=%CONFIGURATION%;Platform=x64
+    - git submodule update --init --recursive
+    - ps: $env:BUILD_PATH=$env:APPVEYOR_BUILD_FOLDER + "\build_" + $env:platform
+    - mkdir %BUILD_PATH%
+    - cd %BUILD_PATH%
+    - cmake %APPVEYOR_BUILD_FOLDER% -G "Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=%configuration%
+    - cmake --build . --config %configuration% 
 
 after_build:
-  - cp C:\projects\CurrencyExchange\Builds\VisualStudio2017\x64\%CONFIGURATION%\App\CurrencyExchanger.exe C:\projects\CurrencyExchange\CurrencyExchanger-%CONFIGURATION%.exe
+  7z a %APPVEYOR_BUILD_FOLDER%\FrankfurterDesktop.7z %BUILD_PATH%\FrankfurterDesktop_artefacts\%configuration%\FrankfurterDesktop.exe
 
 artifacts:
-  - path: CurrencyExchanger-%CONFIGURATION%.exe
-    name: CurrencyExchanger
-
-deploy:
-  provider: GitHub
-  auth_token:
-    secure: m5JDr9ALQMAAOtAweZtEKJeLGQ56709udQPNqridia3yqS5ZZvcRlcSeNss68btl
-  artifact: CurrencyExchanger-%CONFIGURATION%.exe
-  draft: false
-  prerelease: false
-  on:
-    appveyor_repo_tag: true
+  - path: FrankfurterDesktop.7z
+    name: FrankfurterDesktop
