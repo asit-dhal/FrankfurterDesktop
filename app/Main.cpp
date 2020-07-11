@@ -58,9 +58,9 @@ public:
     public:
         MainWindow (String name)  : DocumentWindow(name, 
 			Desktop::getInstance().getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
-			DocumentWindow::allButtons)
+            DocumentWindow::allButtons)
         {
-            setUsingNativeTitleBar (true);
+            //setUsingNativeTitleBar (true);
             setContentOwned (new MainComponent(), true);
 
             centreWithSize (getWidth(), getHeight());
