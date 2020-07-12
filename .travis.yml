@@ -31,5 +31,7 @@ before_install:
   - export CC=${C_COMPILER}
 
 script:
-  - cd Builds/LinuxMakefile
-  - make -j2
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=$configuration ..
+  - cmake --build . --target all
