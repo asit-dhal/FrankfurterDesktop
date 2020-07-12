@@ -31,6 +31,8 @@ set(COMPONENT_SRCS
     app/component/HistoricalRateComponent.cpp
     app/component/HistoricalRatePlotComponent.cpp
     app/component/LatestRateComponent.cpp
+    app/component/UserInputComponent.cpp
+    app/component/DatePickerWindow.cpp
 )
 
 

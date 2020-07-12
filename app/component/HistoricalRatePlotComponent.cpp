@@ -16,10 +16,10 @@
 
 #include "HistoricalRatePlotComponent.h"
 
-namespace component
-{
+namespace component {
 
-const int HistoricalRatePlotComponent::X_OFFSET = 100;
+const int HistoricalRatePlotComponent::X_OFFSET_LEFT = 100;
+const int HistoricalRatePlotComponent::X_OFFSET_RIGHT = 30;
 const int HistoricalRatePlotComponent::Y_OFFSET = 50;
 const int HistoricalRatePlotComponent::X_GRID_LINE_COUNT = 10;
 const int HistoricalRatePlotComponent::Y_GRID_LINE_COUNT = 10;
@@ -62,8 +62,8 @@ void HistoricalRatePlotComponent::drawAxes(Graphics& g)
     auto width = getLocalBounds().getWidth();
     auto height = getLocalBounds().getHeight();
 
-    Line<float> xAxis(X_OFFSET, height - Y_OFFSET, width - X_OFFSET, height - Y_OFFSET);
-    Line<float> yAxis(X_OFFSET, Y_OFFSET, X_OFFSET, height - Y_OFFSET);
+    Line<float> xAxis(X_OFFSET_LEFT, height - Y_OFFSET, width - X_OFFSET_RIGHT, height - Y_OFFSET);
+    Line<float> yAxis(X_OFFSET_LEFT, Y_OFFSET, X_OFFSET_LEFT, height - Y_OFFSET);
 
     g.drawLine(xAxis, 2);
     g.drawLine(yAxis, 2);
@@ -80,13 +80,12 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
     // x-grids
     for (auto i = Y_OFFSET; i < yAxisLength; i += yAxisLength / X_GRID_LINE_COUNT)
     {
-        g.drawLine(X_OFFSET, i, width - X_OFFSET, i, 0.5);
+        g.drawLine(X_OFFSET_LEFT, i, width - X_OFFSET_RIGHT, i, 0.5);
         auto rate = yCoordinateToRate(i);
         String text = String(std::to_string(rate));
         auto textWidth = Font(14.0f).getStringWidth(text);
         auto textHeight = Font(14.0f).getHeight();
-        g.drawText(text, X_OFFSET - textWidth - 5, i - textHeight / 2, textWidth, textHeight, Justification::centred);
-
+        g.drawText(text, X_OFFSET_LEFT - textWidth - 5, i - textHeight / 2, textWidth, textHeight, Justification::centred);
     }
 
     // y-grids
@@ -101,7 +100,7 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
     auto labelWidth = Font(14.0f).getStringWidth(xAxisData.front());
 
     auto index = 0;
-    for (auto i = X_OFFSET + labelWidth + labelWidth / 2; i <= width - X_OFFSET; i += (labelWidth + labelWidth / 2))
+    for (auto i = X_OFFSET_LEFT + labelWidth + labelWidth / 2; i <= width - X_OFFSET_RIGHT; i += (labelWidth + labelWidth / 2))
     {
         g.drawLine(i, Y_OFFSET, i, height - Y_OFFSET, 0.5);
 
@@ -111,7 +110,6 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
         g.drawText(text, i - labelWidth / 2, height - Y_OFFSET + 10, textWidth, textHeight, Justification::centred);
         index += m_xAxisStepValue;
     }
-
 }
 
 void HistoricalRatePlotComponent::transformDataToCoordinates()
@@ -122,7 +120,7 @@ void HistoricalRatePlotComponent::transformDataToCoordinates()
 
     auto width = getLocalBounds().getWidth();
     auto height = getLocalBounds().getHeight();
-    auto realWidth = width - 2 * X_OFFSET;
+    auto realWidth = width - X_OFFSET_LEFT - X_OFFSET_RIGHT;
     auto realHeight = height - 2 * Y_OFFSET;
 
     DBG("width=" << width << " height=" << width << " realWidth=" << realWidth << " realHeight=" << realHeight);
@@ -136,7 +134,7 @@ void HistoricalRatePlotComponent::transformDataToCoordinates()
 
     for (auto i = 0u; i < modelData.size(); i++)
     {
-        auto xCoordinate = X_OFFSET + i * m_xAxisStepValue;
+        auto xCoordinate = X_OFFSET_LEFT + i * m_xAxisStepValue;
         m_timeToXCoordinateMappings[modelData.at(i).first] = xCoordinate;
         m_coordinates[i].setX(xCoordinate);
     }
@@ -152,10 +150,10 @@ void HistoricalRatePlotComponent::transformDataToCoordinates()
     m_minRate = *(std::get<0>(minMax));
     m_maxRate = *(std::get<1>(minMax));
 
-    DBG("minY=" << m_minRate << " maxY=" << m_maxRate);
+    //DBG("minY=" << m_minRate << " maxY=" << m_maxRate);
     auto rangeY = m_maxRate - m_minRate;
     m_yAxisStepValue = realHeight / rangeY;
-    DBG("yAxis step=" << m_yAxisStepValue);
+    //DBG("yAxis step=" << m_yAxisStepValue);
 
     auto  i = 0;
     for (auto const& e : modelData)
@@ -171,11 +169,11 @@ void HistoricalRatePlotComponent::plot(Graphics& g)
     Path path;
     if (!m_coordinates.empty())
     {
-        DBG("Point: x=" << m_coordinates.front().getX() << " y=" << m_coordinates.front().getY());
+        //DBG("Point: x=" << m_coordinates.front().getX() << " y=" << m_coordinates.front().getY());
         path.startNewSubPath(m_coordinates.front());
         for (auto i = 1u; i < m_coordinates.size(); i++)
         {
-            DBG("Point: x=" << m_coordinates.at(i).getX() << " y=" << m_coordinates.at(i).getY());
+            //DBG("Point: x=" << m_coordinates.at(i).getX() << " y=" << m_coordinates.at(i).getY());
             path.lineTo(m_coordinates.at(i));
         }
     }
