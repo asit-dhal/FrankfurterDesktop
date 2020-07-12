@@ -18,18 +18,19 @@
 #include <helper/Utility.h>
 
 #include <sstream>
+#include <nlohmann/json.hpp>
 
 namespace model {
+
+using json = nlohmann::json;
 
 JUCE_IMPLEMENT_SINGLETON(HistoricalRateModel);
 
 HistoricalRateModel::HistoricalRateModel()
-    : m_req("http://www.ecb.europa.eu")
+    : m_req("https://api.frankfurter.app")
 {
     m_selectedCurrency = Currency::INR;
-    m_req.setGet("stats/eurofxref/eurofxref-hist-90d.xml");
     m_req.addListener(this);
-    GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
 }
 
 void HistoricalRateModel::exitSignalSent()
@@ -68,36 +69,47 @@ void HistoricalRateModel::handleAsyncUpdate()
 void HistoricalRateModel::parseResponse(String response)
 {
     m_historicalRates.clear();
-    m_baseCurrency = fromStdString("EUR");
 
-    if (auto xml = parseXML(response)) {
-        if (xml->hasTagName("gesmes:Envelope")) {
-            forEachXmlChildElement(*xml, envelope) {
-                if (envelope->hasTagName("Cube")) {
-                    forEachXmlChildElement(*envelope, cubeOuter) {
-                        Time time;
-                        std::map<Currency, double> rates;
-                        if (cubeOuter->hasAttribute("time")) {
-                            auto date = cubeOuter->getStringAttribute("time").toStdString();
-                            std::vector<std::string> timeTokens = split(date, '-');
-                            time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1, std::stoi(timeTokens.at(2)), 0, 0);
-                        }
-                        if (cubeOuter->hasTagName("Cube")) {
-                            forEachXmlChildElement(*cubeOuter, cubeWithTime){
-                                if (cubeWithTime->hasTagName("Cube")) {
-                                    auto currency = cubeWithTime->getStringAttribute("currency");
-                                    auto value = cubeWithTime->getDoubleAttribute("rate");
-                                    rates[fromStdString(currency.toStdString())] = value;
-                                }
-                            }
-                        }
-
-                        m_historicalRates[time] = rates;
-                    }
+    auto parsedResponse = json::parse(response.toStdString());
+    for (json::iterator it = parsedResponse.begin(); it != parsedResponse.end(); ++it) {
+        if (it.key() == "base") {
+            std::string baseCurrency = it.value();
+            if (m_baseCurrency != fromStdString(baseCurrency)) {
+                DBG("Base currency from Frankfurter is different: " + baseCurrency);
+            }
+        }
+        else if (it.key() == "start_date") {
+            std::string dateToken = it.value();
+            std::vector<std::string> timeTokens = split(dateToken, '-');
+            m_startDate = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1,
+                          std::stoi(timeTokens.at(2)), 0, 0);
+        }
+        else if (it.key() == "end_date") {
+            std::string dateToken = it.value();
+            std::vector<std::string> timeTokens = split(dateToken, '-');
+            m_endDate = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1,
+                          std::stoi(timeTokens.at(2)), 0, 0);
+        }
+        else if (it.key() == "rates") {
+            for (json::iterator dateItr = it.value().begin(); dateItr != it.value().end(); dateItr++) {
+                std::string dateToken = dateItr.key();
+                std::vector<std::string> dateParts = split(dateToken, '-');
+                Time date(std::stoi(dateParts.at(0)), std::stoi(dateParts.at(1)) - 1, std::stoi(dateParts.at(2)), 0, 0);
+                std::map<Currency, double> rates;
+                for (json::iterator rateItr = dateItr.value().begin(); rateItr != dateItr.value().end(); rateItr++) {
+                    rates[fromStdString(rateItr.key())] = rateItr.value();
                 }
+                m_historicalRates[date] = rates;
             }
         }
     }
+}
+
+void HistoricalRateModel::sendRequest()
+{
+    m_req.setGet("2020-01-01..2020-07-01?from=" + toString(m_baseCurrency));
+    GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
+
 }
 
 void HistoricalRateModel::setHistoricalRateByCurrency(const Currency& currency)
@@ -123,6 +135,14 @@ std::vector<std::pair<Time, double>> HistoricalRateModel::getHistoricalRates() c
     return m_selectedCurrencyData;
 }
 
+void HistoricalRateModel::setBaseCurrency(Currency baseCurrency)
+{
+    if (m_baseCurrency != baseCurrency) {
+        m_baseCurrency = baseCurrency;
+        sendRequest();
+    }
+}
+
 int HistoricalRateModel::getNumRows()
 {
     return static_cast<int>(m_selectedCurrencyData.size());
@@ -146,7 +166,7 @@ void HistoricalRateModel::paintCell(Graphics& g, int rowNumber, int columnId, in
     if (rowNumber >= static_cast<int>(m_selectedCurrencyData.size()))
         return;
     g.setColour(rowIsSelected ? Colours::darkblue : TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId));
-    g.setFont({ 14.0f });
+    g.setFont(14.0f);
 
     String text;
     if (columnId == 1) {
@@ -182,7 +202,7 @@ int HistoricalRateModel::getColumnAutoSizeWidth(int columnId)
             buffer << std::fixed << m_selectedCurrencyData.at(i).second;
             text = String(buffer.str());
         }
-        widest = jmax(widest, Font({ 14.0f }).getStringWidth(text));
+        widest = jmax(widest, Font(14.0f).getStringWidth(text));
     }
     return widest + 8;
 }

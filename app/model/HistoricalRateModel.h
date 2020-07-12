@@ -52,11 +52,15 @@ public:
 
     void setHistoricalRateByCurrency(const Currency& currency);
     std::vector<std::pair<Time, double>> getHistoricalRates() const;
+    void setBaseCurrency(Currency baseCurrency);
+
+
 
 private:
     HistoricalRateModel();
     void informListener();
     void parseResponse(String response);
+    void sendRequest();
 
 private:
     struct TimeCompare
@@ -68,6 +72,8 @@ private:
     };
     std::map<Time, std::map<Currency, double>> m_historicalRates;
     Currency m_baseCurrency;
+    Time m_startDate;
+    Time m_endDate;
     JsonRequest m_req;
     ListenerList<Listener> m_listeners;
     Currency m_selectedCurrency;

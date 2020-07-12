@@ -15,6 +15,7 @@
 */
 
 #include "LatestRateComponent.h"
+#include <model/HistoricalRateModel.h>
 #include <helper/Utility.h>
 
 namespace component {
@@ -86,6 +87,7 @@ void LatestRateComponent::onBaseCurrencyChanged()
 {
     auto selectedCurrency = m_baseCurrencyCombobox.getSelectedId();
     model::LatestRateModel::getInstance()->setBaseCurrency(static_cast<Currency>(selectedCurrency));
+    model::HistoricalRateModel::getInstance()->setBaseCurrency(static_cast<Currency>(selectedCurrency));
 }
 
 } // namespace component
