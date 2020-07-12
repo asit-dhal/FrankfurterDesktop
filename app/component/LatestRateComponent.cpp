@@ -22,10 +22,8 @@ namespace component {
 
 LatestRateComponent::LatestRateComponent()
 {
-    m_baseCurrencyLabel.setText("Base Currency", dontSendNotification);
+    addAndMakeVisible(&m_userInputComponent);
     addAndMakeVisible(&m_table);
-    addAndMakeVisible(&m_baseCurrencyLabel);
-    addAndMakeVisible(&m_baseCurrencyCombobox);
     m_table.setColour(ListBox::outlineColourId, Colours::grey);
     m_table.setOutlineThickness(1);
 
@@ -35,13 +33,6 @@ LatestRateComponent::LatestRateComponent()
 
     model::LatestRateModel::getInstance()->addListener(this);
     m_table.setModel(model::LatestRateModel::getInstance());
-
-    for (auto const &e: model::LatestRateModel::getInstance()->getAllowedBaseCurrencies()) {
-        m_baseCurrencyCombobox.addItem(describe(e), static_cast<int>(e));
-    }
-    m_baseCurrencyCombobox.onChange = [this]{ onBaseCurrencyChanged(); };
-
-    m_baseCurrencyCombobox.setSelectedId(static_cast<int>(Currency::EUR));
 }
 
 LatestRateComponent::~LatestRateComponent()
@@ -56,10 +47,9 @@ void LatestRateComponent::paint(Graphics&)
 void LatestRateComponent::resized()
 {
     auto area = getLocalBounds();
-    auto baseCurrencyArea = area.removeFromTop(30);
-    m_baseCurrencyLabel.setBounds(baseCurrencyArea.removeFromLeft(100));
-    m_baseCurrencyCombobox.setBounds(baseCurrencyArea.reduced(10, 0));
-    m_table.setBounds(area.reduced(10));
+    auto userInputArea = area.removeFromTop(130);
+    m_userInputComponent.setBounds(userInputArea);
+    m_table.setBounds(area);
 }
 
 void LatestRateComponent::modelUpdated(model::LatestRateModel *)
@@ -81,13 +71,6 @@ void LatestRateComponent::informListener()
         e->dataUpdated();
         e->statusChanged(String("new data arrived"));
     }
-}
-
-void LatestRateComponent::onBaseCurrencyChanged()
-{
-    auto selectedCurrency = m_baseCurrencyCombobox.getSelectedId();
-    model::LatestRateModel::getInstance()->setBaseCurrency(static_cast<Currency>(selectedCurrency));
-    model::HistoricalRateModel::getInstance()->setBaseCurrency(static_cast<Currency>(selectedCurrency));
 }
 
 } // namespace component

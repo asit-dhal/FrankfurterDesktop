@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.12)
 project(FrankfurterDesktop VERSION 0.0.2)
 
 add_subdirectory(JUCE)
+
+set(JSON_BuildTests OFF CACHE BOOL "Disable json build tests" FORCE)
+set(JSON_Install OFF CACHE BOOL "Disable json build tests" FORCE)
 add_subdirectory(json)
 
 juce_add_gui_app(FrankfurterDesktop
@@ -28,6 +31,8 @@ set(COMPONENT_SRCS
     app/component/HistoricalRateComponent.cpp
     app/component/HistoricalRatePlotComponent.cpp
     app/component/LatestRateComponent.cpp
+    app/component/UserInputComponent.cpp
+    app/component/DatePickerWindow.cpp
 )
 
 

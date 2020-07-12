@@ -16,45 +16,52 @@
 
 #pragma once
 
-#include "UserInputComponent.h"
+#include "DatePickerWindow.h"
 #include <JuceHeader.h>
-#include <helper/JsonRequest.h>
 #include <model/LatestRateModel.h>
 
-namespace component
-{
+namespace component {
 
-class LatestRateComponent
+class UserInputComponent
         : public Component
         , public model::LatestRateModel::Listener
 {
  public:
-
-    class Listener
-    {
-     public:
-        virtual ~Listener() = default;
-        virtual void dataUpdated() = 0;
-        virtual void statusChanged(String message) = 0;
+    struct HistoricalDate {
+        int year = -1;
+        int month = -1;
+        int day = -1;
     };
 
-    LatestRateComponent();
-    ~LatestRateComponent();
+    UserInputComponent();
+    ~UserInputComponent();
 
     void paint(Graphics&) override;
     void resized() override;
     void modelUpdated(model::LatestRateModel *) override;
     void addListener(Listener* listener);
     void informListener();
+    void onBaseCurrencyChanged();
+    static void* showCallback (void* userData);
 
  private:
-    TableListBox m_table{ {}, nullptr };
-    UserInputComponent m_userInputComponent;
+    Label m_baseCurrencyLabel;
+    ComboBox m_baseCurrencyCombobox;
+
+    Label m_historicalDateRangeLabel;
+    TextButton m_dateRangeTextButton;
+
+    DatePickerComponent m_datePickerComponent;
+    AlertWindow m_datePickerAlertWindow;
+
     Font font{ 14.0f };
-    std::vector<Listener*> m_listeners;
+
+    Currency m_baseCurrency;
+
+    HistoricalDate m_startDate, m_endDate;
 
  private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatestRateComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(UserInputComponent)
 };
 
 } // namespace component

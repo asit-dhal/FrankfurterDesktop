@@ -45,7 +45,8 @@ private:
     std::vector<Point<float>> m_coordinates;
     std::map<Time, float> m_timeToXCoordinateMappings;
 
-    static const int X_OFFSET;
+    static const int X_OFFSET_LEFT;
+    static const int X_OFFSET_RIGHT;
     static const int Y_OFFSET;
     static const int X_GRID_LINE_COUNT;
     static const int Y_GRID_LINE_COUNT;

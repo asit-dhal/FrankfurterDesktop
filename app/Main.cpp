@@ -17,10 +17,10 @@
 #include <JuceHeader.h>
 #include "MainComponent.h"
 
-class NewProjectApplication  : public JUCEApplication
+class FrankfurterDesktopApplication  : public JUCEApplication
 {
 public:
-    NewProjectApplication()
+    FrankfurterDesktopApplication()
     {
         Logger::setCurrentLogger(FileLogger::createDateStampedLogger("CurrencyExchanger", "ouput", ".log", "Hallo"));
     }
@@ -83,4 +83,4 @@ private:
     std::unique_ptr<MainWindow> mainWindow;
 };
 
-START_JUCE_APPLICATION (NewProjectApplication)
+START_JUCE_APPLICATION (FrankfurterDesktopApplication)
