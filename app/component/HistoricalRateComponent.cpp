@@ -16,8 +16,7 @@
 
 #include "HistoricalRateComponent.h"
 
-namespace component
-{
+namespace component {
 
 HistoricalRateComponent::HistoricalRateComponent()
 {

@@ -19,12 +19,11 @@
 #include <JuceHeader.h>
 #include <model/HistoricalRateModel.h>
 
-namespace component
-{
+namespace component {
 
-class HistoricalRateComponent :
-        public Component,
-        public model::HistoricalRateModel::Listener
+class HistoricalRateComponent
+        : public Component
+        , public model::HistoricalRateModel::Listener
  {
  public:
     HistoricalRateComponent();

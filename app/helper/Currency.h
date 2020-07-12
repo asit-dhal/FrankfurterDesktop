@@ -24,7 +24,7 @@
 
 enum class Currency
 {
-    EUR,
+    EUR = 1,
     USD,
     JPY,
     BGN,

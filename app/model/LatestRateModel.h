@@ -23,9 +23,10 @@
 namespace model
 {
 
-class LatestRateModel : public Thread::Listener,
-    public AsyncUpdater,
-    public TableListBoxModel
+class LatestRateModel
+        : public Thread::Listener
+        , public AsyncUpdater
+        , public TableListBoxModel
 {
  public:
     enum class Column
@@ -44,12 +45,16 @@ class LatestRateModel : public Thread::Listener,
         virtual void modelUpdated(LatestRateModel* ) = 0;
     };
 
+    ~LatestRateModel();
+
     void addListener(Listener* listenerToAdd);
     void removeListener(Listener* listenerToRemove);
 
     void exitSignalSent() override;
     void handleAsyncUpdate() override;
     Currency getBaseCurrency() const;
+    void setBaseCurrency(Currency baseCurrency);
+    const std::vector<Currency> getAllowedBaseCurrencies() const;
     std::vector<std::pair<Currency, double>> getCurrencySpotPrices() const;
     Time getTimeOfLastUpdate() const;
 
@@ -65,16 +70,18 @@ class LatestRateModel : public Thread::Listener,
     LatestRateModel();
     void informListener();
     void parseResponse(String response);
+    void sendRequest();
 
  private:
     std::vector<std::pair<Currency, double>> m_currencySpotPrices;
-    Currency m_baseCurrency;
+    std::vector<Currency> m_allowedBaseCurrencies;
+    Currency m_baseCurrency{ Currency::USD };
     Time m_time;
     JsonRequest m_req;
     ListenerList<Listener> m_listeners;
 
  public:
-    JUCE_DECLARE_SINGLETON(LatestRateModel, false);
+    JUCE_DECLARE_SINGLETON(LatestRateModel, true);
 };
 
 } // namespace model

@@ -20,18 +20,23 @@
 #include <helper/FlagIcons.h>
 #include <helper/Utility.h>
 
+#include <nlohmann/json.hpp>
 #include <sstream>
+
 
 namespace model {
 
+using json = nlohmann::json;
+
 JUCE_IMPLEMENT_SINGLETON(LatestRateModel);
 
-LatestRateModel::LatestRateModel() : m_req("http://www.ecb.europa.eu")
+LatestRateModel::LatestRateModel()
+    : m_req("https://api.frankfurter.app")
 {
+    m_allowedBaseCurrencies.push_back(Currency::EUR);
+    m_allowedBaseCurrencies.push_back(Currency::USD);
+    m_allowedBaseCurrencies.push_back(Currency::GBP);
     m_req.addListener(this);
-    m_req.setGet("stats/eurofxref/eurofxref-daily.xml");
-
-    GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
 }
 
 void LatestRateModel::exitSignalSent()
@@ -66,6 +71,19 @@ Currency LatestRateModel::getBaseCurrency() const
     return m_baseCurrency;
 }
 
+void LatestRateModel::setBaseCurrency(Currency baseCurrency)
+{
+    if (m_baseCurrency != baseCurrency) {
+        m_baseCurrency = baseCurrency;
+        sendRequest();
+    }
+}
+
+const std::vector<Currency> LatestRateModel::getAllowedBaseCurrencies() const
+{
+    return m_allowedBaseCurrencies;
+}
+
 std::vector<std::pair<Currency, double>> LatestRateModel::getCurrencySpotPrices() const
 {
     return m_currencySpotPrices;
@@ -79,31 +97,24 @@ Time LatestRateModel::getTimeOfLastUpdate() const
 void LatestRateModel::parseResponse(String response)
 {
     std::map<Currency, double> rates;
-    m_baseCurrency = fromStdString("EUR");
 
-    if (auto xml = parseXML(response)) {
-        if (xml->hasTagName("gesmes:Envelope")) {
-            forEachXmlChildElement(*xml, envelope) {
-                if (envelope->hasTagName("Cube")) {
-                    forEachXmlChildElement(*envelope, cubeOuter) {
-                        if (cubeOuter->hasAttribute("time")) {
-                            auto date = cubeOuter->getStringAttribute("time").toStdString();
-                            std::vector<std::string> timeTokens = split(date, '-');
-                            //boost::algorithm::split(timeTokens, date, boost::is_any_of("-"));
-                            m_time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1,
-                                          std::stoi(timeTokens.at(2)), 0, 0);
-                        }
-                        if (cubeOuter->hasTagName("Cube")) {
-                            forEachXmlChildElement(*cubeOuter, cubeWithTime) {
-                                if (cubeWithTime->hasTagName("Cube")) {
-                                    auto currency = cubeWithTime->getStringAttribute("currency");
-                                    auto value = cubeWithTime->getDoubleAttribute("rate");
-                                    rates[fromStdString(currency.toStdString())] = value;
-                                }
-                            }
-                        }
-                    }
-                }
+    auto parsedResponse = json::parse(response.toStdString());
+    for (json::iterator it = parsedResponse.begin(); it != parsedResponse.end(); ++it) {
+        if (it.key() == "base") {
+            std::string baseCurrency = it.value();
+            if (m_baseCurrency != fromStdString(baseCurrency)) {
+                DBG("Base currency from Frankfurter is different: " + baseCurrency);
+            }
+        }
+        else if (it.key() == "date") {
+            std::string dateToken = it.value();
+            std::vector<std::string> timeTokens = split(dateToken, '-');
+            m_time = Time(std::stoi(timeTokens.at(0)), std::stoi(timeTokens.at(1)) - 1,
+                          std::stoi(timeTokens.at(2)), 0, 0);
+        }
+        else if (it.key() == "rates") {
+            for (json::iterator rateItr = it.value().begin(); rateItr != it.value().end(); rateItr++) {
+                rates[fromStdString(rateItr.key())] = rateItr.value();
             }
         }
     }
@@ -112,6 +123,12 @@ void LatestRateModel::parseResponse(String response)
     for (auto const e : rates) {
         m_currencySpotPrices.emplace_back(e);
     }
+}
+
+void LatestRateModel::sendRequest()
+{
+    m_req.setGet("latest?from="+toString(m_baseCurrency));
+    GlobalInstance::getInstance()->getThreadPool().addJob(&m_req, false);
 }
 
 int LatestRateModel::getNumRows()
@@ -135,7 +152,7 @@ void LatestRateModel::paintCell(Graphics& g, int rowNumber, int columnId, int wi
     if (rowNumber >= static_cast<int>(m_currencySpotPrices.size()))
         return;
     g.setColour(rowIsSelected ? Colours::darkblue : TopLevelWindow::getActiveTopLevelWindow()->getLookAndFeel().findColour(ListBox::textColourId));
-    g.setFont({ 14.0f });
+    g.setFont(14.0f);
 
     String text;
     if (columnId == 1) {
@@ -179,7 +196,7 @@ int LatestRateModel::getColumnAutoSizeWidth(int columnId)
             buffer << std::fixed << m_currencySpotPrices.at(i).second;
             text = String(buffer.str());
         }
-        widest = jmax(widest, Font({ 20.0f }).getStringWidth(text));
+        widest = jmax(widest, Font(20.0f).getStringWidth(text));
 
     }
     return widest + 8;
@@ -200,6 +217,11 @@ std::map<int, String> LatestRateModel::getColumnNames()
     cols.insert({ static_cast<int>(Column::eCurrencyName), "Currency Name" });
     cols.insert({ static_cast<int>(Column::eSpotPrice), "Spot Price" });
     return cols;
+}
+
+LatestRateModel::~LatestRateModel()
+{
+    clearSingletonInstance();
 }
 
 void LatestRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)

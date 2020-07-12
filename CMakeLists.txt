@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.12)
 project(FrankfurterDesktop VERSION 0.0.2)
 
 add_subdirectory(JUCE)
+add_subdirectory(json)
 
 juce_add_gui_app(FrankfurterDesktop
     BUNDLE_ID   asitdhal
@@ -53,4 +54,5 @@ target_link_libraries(FrankfurterDesktop PRIVATE
     juce::juce_graphics
     juce::juce_events
     juce::juce_gui_basics
+    nlohmann_json::nlohmann_json
 )

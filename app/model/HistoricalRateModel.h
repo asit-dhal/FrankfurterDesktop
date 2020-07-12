@@ -20,12 +20,12 @@
 #include <helper/Currency.h>
 #include <helper/JsonRequest.h>
 
-namespace model
-{
+namespace model {
 
-class HistoricalRateModel : public Thread::Listener,
-    public AsyncUpdater,
-    public TableListBoxModel
+class HistoricalRateModel
+        : public Thread::Listener
+        , public AsyncUpdater
+        , public TableListBoxModel
 {
 public:
     class Listener
@@ -34,6 +34,8 @@ public:
         virtual ~Listener() = default;
         virtual void modelUpdated(HistoricalRateModel*) = 0;
     };
+
+    ~HistoricalRateModel();
 
     void addListener(Listener* listenerToAdd);
     void removeListener(Listener* listenerToRemove);
@@ -57,6 +59,13 @@ private:
     void parseResponse(String response);
 
 private:
+    struct TimeCompare
+    {
+      bool operator()(const Time &l, const Time &r) const
+      {
+        return l > r;
+      }
+    };
     std::map<Time, std::map<Currency, double>> m_historicalRates;
     Currency m_baseCurrency;
     JsonRequest m_req;
@@ -64,7 +73,7 @@ private:
     Currency m_selectedCurrency;
     std::vector<std::pair<Time, double>> m_selectedCurrencyData;
 public:
-    JUCE_DECLARE_SINGLETON(HistoricalRateModel, false);
+    JUCE_DECLARE_SINGLETON(HistoricalRateModel, true);
 };
 
 } // namespace model

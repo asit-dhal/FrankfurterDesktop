@@ -24,17 +24,15 @@
 #include <vector>
 #include <tuple>
 
-class MainComponent :
-    public Component,
-    public model::LatestRateModel::Listener,
-    public Timer
+class MainComponent
+        : public Component
+        , public model::LatestRateModel::Listener
+        , public Timer
 {
 public:
-    //==============================================================================
     MainComponent();
     ~MainComponent();
 
-    //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
     //void handleAsyncUpdate() override;

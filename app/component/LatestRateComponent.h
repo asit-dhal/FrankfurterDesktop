@@ -23,9 +23,9 @@
 namespace component
 {
 
-class LatestRateComponent :
-        public Component,
-        public model::LatestRateModel::Listener
+class LatestRateComponent
+        : public Component
+        , public model::LatestRateModel::Listener
 {
  public:
 
@@ -45,9 +45,12 @@ class LatestRateComponent :
     void modelUpdated(model::LatestRateModel *) override;
     void addListener(Listener* listener);
     void informListener();
+    void onBaseCurrencyChanged();
 
  private:
     TableListBox m_table{ {}, nullptr };
+    Label m_baseCurrencyLabel;
+    ComboBox m_baseCurrencyCombobox;
     Font font{ 14.0f };
     std::vector<Listener*> m_listeners;
 

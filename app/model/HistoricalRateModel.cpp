@@ -23,8 +23,8 @@ namespace model {
 
 JUCE_IMPLEMENT_SINGLETON(HistoricalRateModel);
 
-HistoricalRateModel::HistoricalRateModel() :
-    m_req("http://www.ecb.europa.eu")
+HistoricalRateModel::HistoricalRateModel()
+    : m_req("http://www.ecb.europa.eu")
 {
     m_selectedCurrency = Currency::INR;
     m_req.setGet("stats/eurofxref/eurofxref-hist-90d.xml");
@@ -35,6 +35,11 @@ HistoricalRateModel::HistoricalRateModel() :
 void HistoricalRateModel::exitSignalSent()
 {
     triggerAsyncUpdate();
+}
+
+HistoricalRateModel::~HistoricalRateModel()
+{
+    clearSingletonInstance();
 }
 
 void HistoricalRateModel::addListener(Listener* listenerToAdd)
@@ -189,21 +194,21 @@ void HistoricalRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)
         return isForwards ? less : !less;
     };
 
-    /*auto column2Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
+    auto column2Comparator = [&](const std::pair<Time, double>& lhs, const std::pair<Time, double>& rhs) {
         auto lhsVal = static_cast<int>(lhs.second * 10000);
         auto rhsVal = static_cast<int>(rhs.second * 10000);
-        auto less = !(lhsVal > rhsVal);
+        auto less = lhsVal > rhsVal;
         return isForwards ? less : !less;
-    };*/
+    };
 
 
 
     if (newSortColumnId == 1) {
         std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column1Comparator);
     }
-    /*else if (newSortColumnId == 2) {
+    else if (newSortColumnId == 2) {
         std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column2Comparator);
-    }*/
+    }
 }
 
 } // namespace model

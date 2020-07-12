@@ -46,7 +46,7 @@ void HistoricalRatePlotComponent::paint(Graphics& g)
     g.setColour(Colours::white);
     g.setFont(14.0f);
 
-    auto area = getLocalBounds();
+//    auto area = getLocalBounds();
 
     drawAxes(g);
     if (!model::HistoricalRateModel::getInstance()->getHistoricalRates().empty())
@@ -74,7 +74,7 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
     auto width = getLocalBounds().getWidth();
     auto height = getLocalBounds().getHeight();
 
-    auto xAxisLength = width - X_OFFSET * 2;
+//    auto xAxisLength = width - X_OFFSET * 2;
     auto yAxisLength = height - Y_OFFSET * 2;
 
     // x-grids
@@ -83,8 +83,8 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
         g.drawLine(X_OFFSET, i, width - X_OFFSET, i, 0.5);
         auto rate = yCoordinateToRate(i);
         String text = String(std::to_string(rate));
-        auto textWidth = Font({ 14.0f }).getStringWidth(text);
-        auto textHeight = Font({ 14.0f }).getHeight();
+        auto textWidth = Font(14.0f).getStringWidth(text);
+        auto textHeight = Font(14.0f).getHeight();
         g.drawText(text, X_OFFSET - textWidth - 5, i - textHeight / 2, textWidth, textHeight, Justification::centred);
 
     }
@@ -98,7 +98,7 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
         xAxisData.push_back(e.first.formatted(String("%d-%m-%Y")));
     }
 
-    auto labelWidth = Font({ 14.0f }).getStringWidth(xAxisData.front());
+    auto labelWidth = Font(14.0f).getStringWidth(xAxisData.front());
 
     auto index = 0;
     for (auto i = X_OFFSET + labelWidth + labelWidth / 2; i <= width - X_OFFSET; i += (labelWidth + labelWidth / 2))
@@ -106,8 +106,8 @@ void HistoricalRatePlotComponent::drawGridsAndLabels(Graphics& g)
         g.drawLine(i, Y_OFFSET, i, height - Y_OFFSET, 0.5);
 
         String text = xAxisData.at(index);
-        auto textWidth = Font({ 14.0f }).getStringWidth(text);
-        auto textHeight = Font({ 14.0f }).getHeight();
+        auto textWidth = Font(14.0f).getStringWidth(text);
+        auto textHeight = Font(14.0f).getHeight();
         g.drawText(text, i - labelWidth / 2, height - Y_OFFSET + 10, textWidth, textHeight, Justification::centred);
         index += m_xAxisStepValue;
     }
@@ -134,7 +134,7 @@ void HistoricalRatePlotComponent::transformDataToCoordinates()
 
     m_xAxisStepValue = realWidth / modelData.size();
 
-    for (auto i = 0; i < modelData.size(); i++)
+    for (auto i = 0u; i < modelData.size(); i++)
     {
         auto xCoordinate = X_OFFSET + i * m_xAxisStepValue;
         m_timeToXCoordinateMappings[modelData.at(i).first] = xCoordinate;
@@ -173,7 +173,7 @@ void HistoricalRatePlotComponent::plot(Graphics& g)
     {
         DBG("Point: x=" << m_coordinates.front().getX() << " y=" << m_coordinates.front().getY());
         path.startNewSubPath(m_coordinates.front());
-        for (auto i = 1; i < m_coordinates.size(); i++)
+        for (auto i = 1u; i < m_coordinates.size(); i++)
         {
             DBG("Point: x=" << m_coordinates.at(i).getX() << " y=" << m_coordinates.at(i).getY());
             path.lineTo(m_coordinates.at(i));
