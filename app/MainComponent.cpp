@@ -26,16 +26,9 @@ MainComponent::MainComponent()
     getLookAndFeel().setDefaultSansSerifTypefaceName("Arial Unicode MS");
 #endif
 
-    m_currencyLabel.setJustificationType (Justification::centred);
-    m_dateLabel.setJustificationType (Justification::centred);
     m_statueLabel.setJustificationType(Justification::left);
-
-    m_currencyLabel.setFont (Font (16.0f, Font::bold));
-    m_dateLabel.setFont (Font (16.0f, Font::bold));
     m_statueLabel.setFont(font);
 
-    addAndMakeVisible(m_currencyLabel);
-    addAndMakeVisible(m_dateLabel);
     addAndMakeVisible(m_latestRateComponent);
     addAndMakeVisible(m_historicalRateComponent);
     addAndMakeVisible(m_historicalRatePlotComponent);
@@ -60,10 +53,7 @@ void MainComponent::paint (Graphics&)
 void MainComponent::resized()
 {
     auto area = getLocalBounds();
-    auto titleHeight = 30;
     auto windowWidth = area.getWidth();
-    m_currencyLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
-    m_dateLabel.setBounds(area.removeFromTop(titleHeight).reduced(5));
     m_statueLabel.setBounds(area.removeFromBottom(20).reduced(5));
     auto latestRateComponentWith = (windowWidth * 3) / 10;
     auto historicalRateComponentWidth = (windowWidth * 1.5) / 10;
@@ -76,11 +66,7 @@ void MainComponent::resized()
 
 void MainComponent::modelUpdated(model::LatestRateModel*)
 {
-    auto modelInstance = model::LatestRateModel::getInstance();
-    auto baseCurrencyText = "Base Currency: " + String(describe(modelInstance->getBaseCurrency()));
-    auto dateTimeText = "Foreign Exchange reference rates on " + modelInstance->getTimeOfLastUpdate().toString(true, false);
-    m_currencyLabel.setText(baseCurrencyText, dontSendNotification);
-    m_dateLabel.setText(dateTimeText, dontSendNotification);
+//    auto modelInstance = model::LatestRateModel::getInstance();
 }
 
 /*

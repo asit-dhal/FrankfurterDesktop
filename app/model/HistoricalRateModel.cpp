@@ -202,7 +202,6 @@ void HistoricalRateModel::sortOrderChanged(int newSortColumnId, bool isForwards)
     };
 
 
-
     if (newSortColumnId == 1) {
         std::sort(std::begin(m_selectedCurrencyData), std::end(m_selectedCurrencyData), column1Comparator);
     }

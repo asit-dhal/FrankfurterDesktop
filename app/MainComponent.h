@@ -41,8 +41,6 @@ public:
     void timerCallback() override;
 
 private:
-    Label m_currencyLabel;
-    Label m_dateLabel;
     component::LatestRateComponent m_latestRateComponent;
     component::HistoricalRateComponent m_historicalRateComponent;
     component::HistoricalRatePlotComponent m_historicalRatePlotComponent;
