@@ -22,7 +22,7 @@ namespace component {
 
 
 UserInputComponent::UserInputComponent()
-    : m_datePickerAlertWindow("select date", "select date", AlertWindow::NoIcon)
+    : m_datePickerAlertWindow("", "", AlertWindow::NoIcon)
 {
     m_baseCurrencyLabel.setText("Base Currency", dontSendNotification);
     m_historicalStartDateLabel.setText("Historical Rate Start Date", dontSendNotification);
@@ -58,6 +58,8 @@ UserInputComponent::UserInputComponent()
     m_baseCurrencyCombobox.setSelectedId(static_cast<int>(Currency::EUR));
 
     populateDateRangeComboboxes();
+
+    m_datePickerComponent.setDateTime(Time::getCurrentTime());
     m_datePickerAlertWindow.addCustomComponent(&m_datePickerComponent);
 
     m_dateRangeTextButton.onClick = [this] {
